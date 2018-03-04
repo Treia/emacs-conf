@@ -196,7 +196,7 @@ We don't want customisation in our init.el
 
 Save abbreviations in local
 #+BEGIN_SRC emacs-lisp
-  (setq-default abbrev-file-name (concat my/local-dir "abbrev.el"))
+  (setq-default abbrev-file-name (concat my/cache-dir "abbrev.el"))
 #+END_SRC
 
 *** UI
