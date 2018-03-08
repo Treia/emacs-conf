@@ -85,11 +85,11 @@ This is Marc Planelles's personal Emacs configuration. A lot of the credit goes 
     "The path to this emacs.d directory")
     (defvar my/cache-dir (concat my/emacs-dir "cache/")
     "Directory for volatile storage")
-    (defvar my/package-dir (concat my/emacs-dir "packages/")
+    (defvar my/packages-dir (concat my/emacs-dir "packages/")
     "This is where package.el and QUELPA packages are kept")
 
     ;; Create the directories
-    (dolist (dir (list my/cache-dir (expand-file-name "elpa" my/package-dir)))
+    (dolist (dir (list my/cache-dir (expand-file-name "elpa" my/packages-dir)))
       (unless (file-directory-p dir)
       (make-directory dir t))))
 #+END_SRC
@@ -117,7 +117,7 @@ Modifying garbage collector threshold during startup to decrease load time. Rese
 Let's keep all packages in the package-dir.
 #+BEGIN_SRC emacs-lisp
   (eval-and-compile
-    (setq package-user-dir (expand-file-name "elpa" my/package-dir)))
+    (setq package-user-dir (expand-file-name "elpa" my/packages-dir)))
 #+END_SRC
 
 Let use-package take care of the package initialization.
@@ -150,6 +150,19 @@ Add archives to package.el and initialize and ensure use-package is installed.
     (setq use-package-always-ensure t
           use-package-verbose t))
 #+END_SRC
+
+Setting up quelpa
+#+BEGIN_SRC emacs-lisp
+(use-package quelpa
+  :config
+  (setq quelpa-update-melpa-p nil
+        quelpa-checkout-melpa-p nil
+        quelpa-melpa-recipe-stores nil
+        quelpa-self-upgrade nil
+        quelpa-dir (expand-file-name "quelpa" my/packages-dir)))
+(use-package quelpa-use-package)
+#+END_SRC
+
 ** General Configuration
 *** UTF-8
 UTF-8 everywhere
