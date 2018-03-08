@@ -168,11 +168,12 @@ UTF-8 everywhere
 #+END_SRC
 
 *** Generated files
-No backups and autosaves or lockfiles
+No backups and autosaves or lockfiles, we use git instead
 #+BEGIN_SRC emacs-lisp
 (setq-default auto-save-default nil
               make-backup-files nil
               create-lockfiles nil)
+(setq auto-save-list-file-prefix nil) ; Prevent the creation of auto-list-list directory
 #+END_SRC
 
 History
@@ -609,6 +610,7 @@ Using flycheck to check syntax
     (setq flycheck-clang-args "-Wall -Wextra -Werror"
           flycheck-indication-mode 'right-fringe ;; because we already use git-gutter in the fringe
           flycheck-check-syntax-automatically '(save mode-enabled)) ;; show errors on save
+    (global-flycheck-mode)
     (fringe-helper-define 'flycheck-fringe-bitmap-double-arrow 'center
     "...X...."
     "..XX...."
@@ -671,6 +673,7 @@ Show diff in fringe
     (add-hook 'prog-mode-hook #'+version-control|git-gutter-maybe)
     (add-hook 'text-mode-hook #'+version-control|git-gutter-maybe)
     (add-hook 'conf-mode-hook #'+version-control|git-gutter-maybe)
+
     :config
     ;; Update git-gutter on focus (in case I was using git externally)
     (add-hook 'focus-in-hook #'git-gutter:update-all-windows)
@@ -683,8 +686,21 @@ Show diff in fringe
           (ignore (git-gutter))))
       (add-hook '+evil-esc-hook #'+version-control|update-git-gutter t))
 
+    ;; Visual stuff
+    (setq-default fringes-outside-margins t)
+    (fringe-helper-define 'git-gutter-fr:added '(center repeated)
+      "XXX.....")
+    (fringe-helper-define 'git-gutter-fr:modified '(center repeated)
+      "XXX.....")
+    (fringe-helper-define 'git-gutter-fr:deleted 'bottom
+      "X......."
+      "XX......"
+      "XXX....."
+      "XXXX....")
+
       ;; Update git-gutter on focus (in case I was using git externally)
-      (add-hook 'focus-in-hook #'git-gutter:update-all-windows))
+    (add-hook 'focus-in-hook #'git-gutter:update-all-windows))
+
 #+END_SRC
 ***** Git-timemachine
 Browse versions of a file
