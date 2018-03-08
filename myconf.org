@@ -21,7 +21,6 @@
     - [[#ui][UI]]
     - [[#font][Font]]
     - [[#editor][Editor]]
-    - [[#indentation][Indentation]]
     - [[#mac-specifics][Mac specifics]]
   - [[#packages][Packages]]
     - [[#completion][Completion]]
@@ -244,13 +243,18 @@ Some options
    word-wrap t
    sentence-end-double-space nil
    scroll-preserve-screen-position t
-   require-final-newline t
-   indent-tabs-mode nil
-   tab-always-indent t
-   tab-width 4
-   tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120))
+   require-final-newline t)
 
   (show-paren-mode)
+#+END_SRC
+
+Indentation settings
+#+BEGIN_SRC emacs-lisp
+(setq-default
+ indent-tabs-mode nil
+ tab-always-indent t
+ tab-width 4
+ tab-stop-list (number-sequence 4 200 4))
 #+END_SRC
 
 Remove trailing whitespaces on save. Do not remove trailing lines
@@ -262,13 +266,6 @@ Remove trailing whitespaces on save. Do not remove trailing lines
 Windows placement history with ~C-c <Left>~ and ~C-c <Right>~
 #+BEGIN_SRC emacs-lisp
   (winner-mode)
-#+END_SRC
-
-*** Indentation
-I need 4 spaces wide tabs in C to follow my school's guideline.
-Using spaces otherwise
-#+BEGIN_SRC emacs-lisp
-
 #+END_SRC
 
 *** Mac specifics
