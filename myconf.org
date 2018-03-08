@@ -760,12 +760,17 @@ Show keypress options
 #+BEGIN_SRC emacs-lisp
 (use-package cc-mode
   :commands (c-mode c++-mode objc-mode java-mode)
-  :init
-  (setq-default c-basic-offset 4
-                c-default-style "linux"
-                c-tab-always-indent t
-                indent-tabs-mode t
-                indent-line-function 'insert-tab))
+  :config
+  (defun my/c-mode-indent-setup-hook ()
+    "setup indentation according to 42's guidelines"
+    (setq-default c-basic-offset 4
+                  c-default-style "linux"
+                  c-tab-always-indent t
+                  indent-tabs-mode t
+                  indent-line-function 'insert-tab)
+    ;; buggy sometimes without setq as well
+    (setq c-basic-offset 4))
+  (add-hook 'c-mode-hook 'my/c-mode-indent-setup-hook))
 #+END_SRC
 **** Fish
 #+BEGIN_SRC emacs-lisp
