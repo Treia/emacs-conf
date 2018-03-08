@@ -28,7 +28,7 @@
       - [[#ivy][Ivy]]
     - [[#features][Features]]
       - [[#42-header][42 Header]]
-      - [[#diminish][Diminish]]
+      - [[#delight][Delight]]
       - [[#evil][Evil]]
       - [[#fringe-helper][Fringe-helper]]
       - [[#syntax-checker][Syntax-checker]]
@@ -313,7 +313,7 @@ Company with YouCompleteMe behavior
   (use-package company
     :commands (company-mode global-company-mode company-complete
   company-complete-common company-manual-begin company-grab-line)
-    :diminish
+    :delight
     :init
     (setq company-idle-delay 0.1
           company-tooltip-limit 15
@@ -365,7 +365,7 @@ Keep company completion statistics to improve sorting
 #+BEGIN_SRC emacs-lisp
   (use-package company-statistics
     :after company
-    :diminish
+    :delight
     :config
     (setq company-statistics-file (concat my/cache-dir "company-stats-cache.el"))
     (company-statistics-mode))
@@ -377,7 +377,7 @@ Ivy, the generic completion frontend
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
     :demand t
-    :diminish
+    :delight
     :init
     (add-hook 'my/post-init-hook #'ivy-mode)
     :config
@@ -415,7 +415,7 @@ Swiper, an alternative to isearch making use of ivy
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
     :commands (swiper swiper-all)
-    :diminish)
+    :delight)
 #+END_SRC
 
 ***** Smex
@@ -438,10 +438,10 @@ Inserts the header for 42 school
     :commands (header-insert header-update))
 #+END_SRC
 
-**** Diminish
-Used by use-package to change minor modes names
+**** Delight
+Used by use-package to hide or rename modes
 #+BEGIN_SRC emacs-lisp
-  (use-package diminish)
+  (use-package delight)
 #+END_SRC
 **** Evil
 ***** Evil
@@ -488,7 +488,7 @@ Also installing undo-tree, required by evil
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
     :demand t
-    :diminish
+    :delight
     :init
     (setq undo-tree-visualizer-timestamps t
           undo-tree-visualizer-diff t
@@ -530,7 +530,7 @@ Use key-sequence to escape from everything
 #+BEGIN_SRC emacs-lisp
   (use-package evil-escape
     :commands evil-escape-mode
-    :diminish
+    :delight
     :init
     (setq-default evil-escape-key-sequence "jk")
     (add-hook 'my/post-init-hook #'evil-escape-mode))
@@ -602,7 +602,7 @@ Using flycheck to check syntax
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
     :demand t
-    :diminish
+    :delight
     :config
     (setq flycheck-clang-args "-Wall -Wextra -Werror"
           flycheck-indication-mode 'right-fringe ;; because we already use git-gutter in the fringe
@@ -660,7 +660,7 @@ Show diff in fringe
 #+BEGIN_SRC emacs-lisp
   (use-package git-gutter-fringe
     :commands git-gutter-mode
-    :diminish
+    :delight
     :init
     (defun +version-control|git-gutter-maybe ()
       "Enable `git-gutter-mode' in non-remote buffers."
@@ -732,7 +732,7 @@ Show keypress options
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
     :demand t
-    :diminish
+    :delight
     :init
     (setq which-key-idle-delay 0.1
           which-key-add-column-padding 1
@@ -839,7 +839,7 @@ Move around a project
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :demand t
-    :diminish
+    :delight
     :init
     (setq projectile-completion-system 'ivy
           projectile-switch-project-action 'projectile-find-file
@@ -909,7 +909,7 @@ Evil keybindings for org
 #+BEGIN_SRC emacs-lisp
   (use-package syndicate
       :after org
-      :diminish)
+      :delight)
 #+END_SRC
 **** toc-org
 Table of content in org-mode
@@ -1168,7 +1168,7 @@ Show ~ in front of empty lines like in vi
 Show tabs
 #+BEGIN_SRC emacs-lisp
   (use-package whitespace
-    :diminish
+    :delight
     :hook
     (prog-mode . whitespace-mode)
     :config
