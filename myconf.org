@@ -603,7 +603,6 @@ Allows to search forward/backward with */#
 Allows easier change of the fringe bitmaps
 #+BEGIN_SRC emacs-lisp
   (use-package fringe-helper
-    :commands (fringe-helper-define fringe-helper-convert)
     :init
     (unless (fboundp 'define-fringe-bitmap)
       ;; doesn't exist in terminal Emacs; define it to prevent errors
@@ -654,7 +653,7 @@ Flycheck-pos-tip offers flycheck error in a popup
 Better evil integration with evil-magit
 #+BEGIN_SRC emacs-lisp
   (use-package evil-magit
-      :after magit evil)
+      :after magit)
 #+END_SRC
 
 ***** Gitconfig-mode/Gitignore-mode
@@ -672,46 +671,32 @@ Additional modes for gitconfig and gitignore files
 Show diff in fringe
 #+BEGIN_SRC emacs-lisp
   (use-package git-gutter-fringe
-    :commands git-gutter-mode
     :delight
-    :init
-    (defun +version-control|git-gutter-maybe ()
-      "Enable `git-gutter-mode' in non-remote buffers."
-      (when (and (buffer-file-name)
-                 (not (file-remote-p (buffer-file-name))))
-        (git-gutter-mode +1)))
-    (add-hook 'prog-mode-hook #'+version-control|git-gutter-maybe)
-    (add-hook 'text-mode-hook #'+version-control|git-gutter-maybe)
-    (add-hook 'conf-mode-hook #'+version-control|git-gutter-maybe)
-
     :config
     ;; Update git-gutter on focus (in case I was using git externally)
     (add-hook 'focus-in-hook #'git-gutter:update-all-windows)
 
     (with-eval-after-load 'evil
-      (defun +version-control|update-git-gutter ()
+        (defun +version-control|update-git-gutter ()
         "Refresh git-gutter on ESC. Return nil to prevent shadowing other
-  `+evil-esc-hook' hooks."
+    `+evil-esc-hook' hooks."
         (when git-gutter-mode
-          (ignore (git-gutter))))
-      (add-hook '+evil-esc-hook #'+version-control|update-git-gutter t))
-
-    ;; Visual stuff
-    (setq-default fringes-outside-margins t)
+            (ignore (git-gutter))))
+        (add-hook '+evil-esc-hook #'+version-control|update-git-gutter t))
+    ;; Putting git gutter outside margins
+    (setq-default fringes-outside-margins)
     (fringe-helper-define 'git-gutter-fr:added '(center repeated)
-      "XXX.....")
+        "XXX.....")
     (fringe-helper-define 'git-gutter-fr:modified '(center repeated)
-      "XXX.....")
+        "XXX.....")
     (fringe-helper-define 'git-gutter-fr:deleted 'bottom
-      "X......."
-      "XX......"
-      "XXX....."
-      "XXXX....")
-
-      ;; Update git-gutter on focus (in case I was using git externally)
-    (add-hook 'focus-in-hook #'git-gutter:update-all-windows))
-
+        "X......."
+        "XX......"
+        "XXX....."
+        "XXXX....")
+    (global-git-gutter-mode))
 #+END_SRC
+
 ***** Git-timemachine
 Browse versions of a file
 #+BEGIN_SRC emacs-lisp
@@ -772,6 +757,7 @@ Show keypress options
     (setq c-basic-offset 4))
   (add-hook 'c-mode-hook 'my/c-mode-indent-setup-hook))
 #+END_SRC
+
 **** Fish
 #+BEGIN_SRC emacs-lisp
   (use-package fish-mode
@@ -1495,11 +1481,10 @@ k
    '(evil-goggles-undo-redo-change-face ((t (:foreground "#51afef")))))
   (custom-set-faces
     '(diff-hl-change         ((t (:foreground "#ECBE7B"))))
-    '(git-gutter:modified    ((t (:foreground "#ECBE7B"))))
-    '(git-gutter+-modified   ((t (:foreground "#ECBE7B"))))
     '(git-gutter-fr:modified ((t (:foreground "#ECBE7B")))))
 #+END_SRC
 *** Adjust fringe
 #+BEGIN_SRC emacs-lisp
   (fringe-mode '(12 . 12))
 #+END_SRC
+
