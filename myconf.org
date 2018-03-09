@@ -33,6 +33,7 @@
       - [[#fringe-helper][Fringe-helper]]
       - [[#syntax-checker][Syntax-checker]]
       - [[#version-control][Version control]]
+      - [[#workspaces][Workspaces]]
     - [[#keybindings][Keybindings]]
       - [[#general][General]]
       - [[#hydra][Hydra]]
@@ -545,7 +546,13 @@ Use key-sequence to escape from everything
     :commands evil-escape-mode
     :delight
     :init
-    (setq-default evil-escape-key-sequence "jk")
+    (setq evil-escape-excluded-states '(normal visual multiedit emacs motion)
+          evil-escape-excluded-major-modes '(neotree-mode)
+          evil-escape-key-sequence "jk"
+          evil-escape-delay 0.25)
+    :config
+    ;; no `evil-escape' in minibuffer
+    (push #'minibufferp evil-escape-inhibit-functions)
     (add-hook 'my/post-init-hook #'evil-escape-mode))
 #+END_SRC
 ***** Evil-matchit
@@ -714,6 +721,7 @@ Browse versions of a file
     :commands (magit-status magit-blame magit-log-buffer-file magit-file-popup magit-log-all))
 #+END_SRC
 
+**** Workspaces
 *** Keybindings
 **** General
 Use general to set up keybindings
@@ -887,7 +895,7 @@ Prettier bullets
     :mode (("\\.org\\'" . org-mode)
         ("*Org Agenda*" . org-agenda-mode))
     :config
-    (doom-themes-org-config)
+    (add-hook 'my/post-init-hook #'doom-themes-org-config)
     (setq org-directory "~/org"
           org-default-notes-file (concat org-directory "/notes.org")
           org-agenda-start-on-weekday 1
@@ -1021,9 +1029,9 @@ Function to run make on current project
             "~$"
             "^#.*#$"))
     (doom-themes-neotree-config)
-    (add-to-list 'evil-emacs-state-modes 'neotree-mode)
     (add-hook '+evil-esc-hook #'neotree-hide)
 
+    ;; Winner ignores neotree
     (when (bound-and-true-p winner-mode)
       (push neo-buffer-name winner-boring-buffers)))
 #+END_SRC
@@ -1338,6 +1346,24 @@ k
    "k"            'ivy-occur-previous-line
    "l"            'evil-forward-char
    "q"            'quit-window)
+
+  (general-define-key
+   :states '(normal)
+   :keymaps 'neotree-mode-map
+   "TAB"          'neotree-quick-look
+   "RET"          'neotree-enter
+   "c"            'neotree-create-node
+   "d"            'neotree-delete-node
+   "g"            nil
+   "G"            'evil-goto-line
+   "gg"           'evil-goto-first-line
+   "j"            'neotree-next-line
+   "k"            'neotree-previous-line
+   "q"            'neotree-hide
+   "R"            'neotree-refresh
+   "r"            'neotree-rename-node
+   "s"            'neotree-enter-horizontal-split
+   "v"            'neotree-enter-vertical-split)
 
   ;; Undo-tree ;;
   (general-define-key
