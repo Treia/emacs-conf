@@ -65,6 +65,7 @@
       - [[#doom-themes][Doom-themes]]
       - [[#hl-line][hl-line]]
       - [[#hl-todo][hl-todo]]
+      - [[#nav-flash][Nav-flash]]
       - [[#nlinum-relative][Nlinum-relative]]
       - [[#powerline][Powerline]]
       - [[#solaire-mode][Solaire-mode]]
@@ -1170,6 +1171,25 @@ Highlight todos in comments
           `(("TODO"  . ,(face-foreground 'warning))
             ("FIXME" . ,(face-foreground 'error))
             ("NOTE" . ,(face-foreground 'success)))))
+#+END_SRC
+**** Nav-flash
+Used to highlight current cursor line
+#+BEGIN_SRC emacs-lisp
+  (use-package nav-flash
+    :commands nav-flash-show
+    :init
+    (defun my/blink-cursor (&rest _)
+      "Blink current line using `nav-flash'."
+      (interactive)
+      (unless (minibufferp)
+        (nav-flash-show)
+        ;; only show in the current window
+      (overlay-put compilation-highlight-overlay 'window (selected-window))))
+    (after! evil
+      (advice-add #'evil--jumps-jump   :after #'my/blink-cursor)
+      (advice-add #'evil-window-top    :after #'my/blink-cursor)
+      (advice-add #'evil-window-middle :after #'my/blink-cursor)
+      (advice-add #'evil-window-bottom :after #'my/blink-cursor)))
 #+END_SRC
 **** Nlinum-relative
 Show line numbers
