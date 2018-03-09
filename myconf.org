@@ -70,6 +70,10 @@
       - [[#solaire-mode][Solaire-mode]]
       - [[#vi-tilde-fringe][vi-tilde-fringe]]
       - [[#whitespace-mode][Whitespace-mode]]
+  - [[#functions][Functions]]
+    - [[#buffers][Buffers]]
+    - [[#files][Files]]
+    - [[#windows][Windows]]
   - [[#keybindings-1][Keybindings]]
   - [[#post-init][Post-init]]
     - [[#run-post-init-hook][Run post init hook]]
@@ -77,7 +81,7 @@
     - [[#adjust-fringe][Adjust fringe]]
 
 ** About this file
-This is Marc Planelles's personal Emacs configuration. A lot of the credit goes to [[https://github.com/hlissner][hlissner]] and his great doom-emacs config.
+This is my personal Emacs configuration. A lot of the credit goes to [[https://github.com/hlissner][hlissner]] and his great doom-emacs config. I would use doom myself as it is much better integrated but I feel like I'm learning a lot more about emacs and lisp by doing my own configuration.
 ** Variables
 *** Directories
 #+BEGIN_SRC emacs-lisp
@@ -722,6 +726,50 @@ Browse versions of a file
 #+END_SRC
 
 **** Workspaces
+Using persp so that we can create isolated workspaces, each with their own windows and buffers
+#+BEGIN_SRC emacs-lisp
+(use-package persp-mode
+  :demand t
+  :config
+  (setq wg-morph-on nil
+        persp-autokill-buffer-on-remove 'kill-weak
+        persp-auto-save-fname "autosave"
+        persp-nil-name "nil"
+        persp-nil-hidden t
+        persp-auto-resume-time 1.0
+        persp-auto-save-opt 1
+        persp-save-dir (concat my/cache-dir "workspaces/"))
+  (add-hook 'my/post-init-hook #'(lambda () (persp-mode 1)))
+
+  (defun +workspace-switch-last ()
+    "Switches to the last workspace"
+    (interactive)
+    (if (+workspace-exists-p +workspaces-last-persp)
+      (persp-switch +workspaces-last-persp)
+      (error "No previous workspace.")))
+
+  (defun +workspace-exists-p (name)
+    "Returns t if NAME is the name of an existing workspace."
+    (when (symbolp name)
+      (setq name (symbol-name name)))
+    (unless (stringp name)
+      (error "Expected a string, got a %s" (type-of name)))
+      (member name (persp-names-current-frame-fast-ordered)))
+
+  (defun +workspace-switch-project (arg)
+    (interactive "P")
+    (ivy-read "Switch to Project Perspective: "
+              (if (projectile-project-p)
+                  (cons (abbreviate-file-name (projectile-project-root))
+                        (projectile-relevant-known-projects))
+                projectile-known-projects)
+              :action (lambda (project)
+                        (let ((persp-reset-windows-on-nil-window-conf t))
+                          (persp-switch project)
+                          (let ((projectile-completion-system 'ivy))
+                            (projectile-switch-project-by-name project)))))))
+#+END_SRC
+
 *** Keybindings
 **** General
 Use general to set up keybindings
@@ -903,7 +951,8 @@ Prettier bullets
           org-hide-leading-stars t
           org-hide-leading-stars-before-indent-mode t
           org-return-follows-link t
-          org-startup-folded t)
+          org-startup-folded t
+          org-startup-truncated t)
 
     ;; Babel settings
     (setq org-src-fontify-natively t
@@ -1187,6 +1236,58 @@ Show tabs
     (setq whitespace-style '(face tabs tab-mark)))
 #+END_SRC
 k
+** Functions
+Again credit goes to hlissner and his doom emacs config for these
+*** Buffers
+#+BEGIN_SRC emacs-lisp
+  (defun my/kill-buffer-and-windows (buffer)
+    "Kill the buffer and delete all the windows it's displayed in."
+    (dolist (window (get-buffer-window-list buffer))
+      (unless (one-window-p t)
+        (delete-window window)))
+    (kill-buffer buffer))
+
+  (defun bmacs/kill-other-buffers (&optional persp-p)
+  "Kill all other buffers (besides the current one).
+    If PROJECT-P (universal argument), kill only buffers that belong to the current
+    project."
+  (interactive "P")
+  (let ((buffers (if persp-p (persp-buffer-list) (buffer-list)))
+        (current-buffer (current-buffer)))
+    (dolist (buf buffers)
+      (unless (eq buf current-buffer)
+        (bmacs/kill-buffer-and-windows buf)))
+    (when (called-interactively-p 'interactive)
+      (message "Killed %s buffers" (length buffers)))))
+#+END_SRC
+*** Files
+#+BEGIN_SRC emacs-lisp
+(defun my/sudo-find-file (file)
+  "Open a file as root."
+  (interactive
+   (list (read-file-name "Open as root: ")))
+  (find-file (if (file-writable-p file)
+                 file
+               (concat "/sudo:root@localhost:" file))))
+
+(defun my/sudo-this-file ()
+  "Open the current file as root."
+  (interactive)
+  (my/sudo-find-file (file-truename buffer-file-name)))
+#+END_SRC
+*** Windows
+#+BEGIN_SRC emacs-lisp
+  (defun my/window-zoom ()
+    "Maximize and isolate the current buffer. Activate again to undo this. If the
+  window changes before then, the undo expires."
+    (interactive)
+    (if (and (one-window-p)
+             (assoc ?_ register-alist))
+        (jump-to-register ?_)
+      (window-configuration-to-register ?_)
+      (delete-other-windows)))
+#+END_SRC
+
 ** Keybindings
 #+BEGIN_SRC emacs-lisp
   (general-define-key "M-x" 'counsel-M-x)
