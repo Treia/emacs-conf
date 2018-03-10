@@ -1185,7 +1185,7 @@ Used to highlight current cursor line
         (nav-flash-show)
         ;; only show in the current window
       (overlay-put compilation-highlight-overlay 'window (selected-window))))
-    (after! evil
+    (with-eval-after-load 'evil
       (advice-add #'evil--jumps-jump   :after #'my/blink-cursor)
       (advice-add #'evil-window-top    :after #'my/blink-cursor)
       (advice-add #'evil-window-middle :after #'my/blink-cursor)
@@ -1267,7 +1267,7 @@ Again credit goes to hlissner and his doom emacs config for these
         (delete-window window)))
     (kill-buffer buffer))
 
-  (defun bmacs/kill-other-buffers (&optional persp-p)
+  (defun my/kill-other-buffers (&optional persp-p)
   "Kill all other buffers (besides the current one).
     If PROJECT-P (universal argument), kill only buffers that belong to the current
     project."
@@ -1276,7 +1276,7 @@ Again credit goes to hlissner and his doom emacs config for these
         (current-buffer (current-buffer)))
     (dolist (buf buffers)
       (unless (eq buf current-buffer)
-        (bmacs/kill-buffer-and-windows buf)))
+        (my/kill-buffer-and-windows buf)))
     (when (called-interactively-p 'interactive)
       (message "Killed %s buffers" (length buffers)))))
 #+END_SRC
@@ -1319,65 +1319,115 @@ Again credit goes to hlissner and his doom emacs config for these
    ;; a ;;
    "a"            'ace-window
    ;; b ;;
-   "b"            '(hydra-buffer/body :which-key "buffer")
+   "b"            '(:ignore t :which-key "Buffers")
+   "ba"           '(mark-whole-buffer :which-key "Select whole buffer")
+   "bb"           '(counsel-projectile-switch-to-buffer :which-key "Switch workspace buffer")
+   "bB"           '(ivy-switch-buffer :which-key "Switch buffer")
+   "bd"           '(kill-this-buffer :which-key "Kill buffer")
+   "bD"           '(lambda () (interactive) (my/kill-other-buffers) t :which-key "Kill other buffers")
+   "bi"           '(ibuffer :which-key "Open ibuffer")
+   "bk"           '(kill-buffer :which-key "Kill a buffer")
+   "bn"           '(evil-buffer-new :which-key "New empty buffer")
 
    ;; c ;;
-   "c"            '(:ignore t :which-key "comment")
-   "cb"           '(comment-box :which-key "box")
-   "cc"           '(evilnc-comment-or-uncomment-lines :which-key "line")
-   "cl"           '(comments-insert-bar :which-key "bar")
-   "cp"           '(evilnc-comment-or-uncomment-paragraphs :which-key "paragraph")
+   "c"            '(:ignore t :which-key "Comment")
+   "cb"           '(comment-box :which-key "Box")
+   "cc"           '(evilnc-comment-or-uncomment-lines :which-key "Line")
+   "cl"           '(comments-insert-bar :which-key "Bar")
+   "cp"           '(evilnc-comment-or-uncomment-paragraphs :which-key "Paragraph")
 
    ;; d ;;
-   "d"            '(:ignore t :which-key "describe")
-   "db"           '(counsel-descbinds :which-key "binds")
-   "df"           '(counsel-describe-function :which-key "function")
-   "dv"           '(counsel-describe-variable :which-key "variable")
+   "d"            '(:ignore t :which-key "Describe")
+   "db"           '(counsel-descbinds :which-key "Binds")
+   "df"           '(counsel-describe-function :which-key "Function")
+   "dv"           '(counsel-describe-variable :which-key "Variable")
 
    ;; f ;;
-   "f"            '(:ignore t :which-key "files")
-   "fa"           '(counsel-ag :which-key "ag search")
-   "ff"           '(counsel-find-file :which-key "find file")
-   "fg"           '(counsel-git :which-key "git ff")
-   "fp"           '(counsel-git-grep :which-key "git grep")
-   "fr"           '(counsel-recentf :which-key "recent files")
-   "ft"           '(neotree-toggle :which-key "neotree")
-   "fz"           '(counsel-fzf :which-key "fzf")
+   "f"            '(:ignore t :which-key "Files")
+   "fa"           '(counsel-ag :which-key "Ag search")
+   "fE"           '(my/sudo-edit :which-key "Sudo current file")
+   "fF"           '(my/sudo-find-file :which-key "Find file with sudo")
+   "ff"           '(counsel-find-file :which-key "Find file")
+   "fg"           '(counsel-git :which-key "Git ff")
+   "fp"           '(counsel-git-grep :which-key "Git grep")
+   "fr"           '(counsel-recentf :which-key "Recent files")
+   "fs"           '(save-buffer :which-key "Save buffer")
+   "fS"           '(evil-write-all :which-key "Save all buffers")
+   "ft"           '(neotree-toggle :which-key "Neotree")
+   "fz"           '(counsel-fzf :which-key "Fzf")
 
    ;; g ;;
-   "g"            '(:ignore t :which-key "git")
-   "gb"           '(magit-blame :which-key "git blame")
-   "gf"           '(magit-file-popup :which-key "git log current file")
-   "gl"           '(magit-log-all :which-key "git log all")
-   "gs"           '(magit-status :which-key "git status")
-   "gt"           '(git-timemachine :which-key "git time machine")
+   "g"            '(:ignore t :which-key "Git")
+   "gb"           '(magit-blame :which-key "Git blame")
+   "gf"           '(magit-file-popup :which-key "Git log current file")
+   "gl"           '(magit-log-all :which-key "Git log all")
+   "gs"           '(magit-status :which-key "Git status")
+   "gt"           '(git-timemachine :which-key "Git time machine")
 
    ;; j ;;
-   "j"            '(:ignore t :which-key "jump to")
-   "jt"           '(avy-goto-word-1 :which-key "word")
-   "jl"           '(avy-goto-line :which-key "line")
-   "jo"           '(avy-org-goto-heading-timer :whick-key "org heading")
+   "j"            '(:ignore t :which-key "Jump to")
+   "jt"           '(avy-goto-word-1 :which-key "Word")
+   "jl"           '(avy-goto-line :which-key "Line")
+   "jo"           '(avy-org-goto-heading-timer :whick-key "Org heading")
 
    ;; h ;;
    "h"            '(header-insert :which-key "42header")
 
+   ;; l ;;
+   "l"            '(:ignore t :which-key "Workspaces")
+   "ld"           '(persp-kill :which-key "Kill workspace")
+   "ll"           '(persp-switch :which-key "Switch to workspace")
+   "ls"           '(persp-save-state-to-file :which-key "Save current workspace")
+   "l TAB"        '(+workspace/switch-last :which-key "Switch to last workspace")
+
    ;; o ;;
-   "o"            '(:ignore t :which-key "org")
-   "oa"           '(org-agenda :which-key "agenda")
-   "oc"           '(org-capture :which-key "capture")
-   "ol"           '(org-store-link :which-key "store-link")
-   "oo"           '(+my/open-organizer :which-key "organizer")
+   "o"            '(:ignore t :which-key "Org")
+   "oa"           '(org-agenda :which-key "Agenda")
+   "oc"           '(org-capture :which-key "Capture")
+   "ol"           '(org-store-link :which-key "Store-link")
+   "oo"           '(+my/open-organizer :which-key "Organizer")
 
    ;; p ;;
-   "p"            '(hydra-projectile/body :which-key "projectile")
+   "p"            '(:ignore t :which-key "Project")
+   "pc"           '(projectile-invalidate-cache :which-key "Invalidate cache")
+   "pi"           '(projectile-ibuffer :which-key "Project Ibuffer")
+   "pf"           '(counsel-projectile-find-file :which-key "Find file in project")
+   "pk"           '(projectile-kill-buffers :which-key "Kill project buffers")
+   "pl"           '(+workspace-switch-project :which-key "Switch project workspace")
+   "pp"           '(counsel-projectile-switch-project :which-key "Switch project")
+   "pr"           '(projectile-recentf :which-key "Project recent files")
+   "p!"           '(projectile-run-command-in-root :which-key "Run command at porject root")
 
    ;; s ;;
    "s"            'swiper
 
    ;; w ;;
-   "w"            '(hydra-window/body :which-key "windows")
+   "w"            '(:ignore t :which-key "Windows")
+   "wa"           '(ace-window :which-key "Ace-window")
+   "wd"           '(delete-window :which-key "Delete current window")
+   "wH"           '(evil-window-move-far-left :which-key "Move window left")
+   "wh"           '(evil-window-left :which-key "Window left")
+   "wJ"           '(evil-window-move-far-down :which-key "Move window down")
+   "wj"           '(evil-window-down :which-key "Window down")
+   "wK"           '(evil-window-move-far-up :which-key "Move window up")
+   "wk"           '(evil-window-up :which-key "Window up")
+   "wL"           '(evil-window-move-far-right :which-key "Move window right")
+   "wl"           '(evil-window-right :which-key "Window right")
+   "ws"           '(ace-swap-window :which-key "Ace swap window")
+   "wu"           '(winner-undo :which-key "Winner undo")
+   "wU"           '(winner-redo :which-key "Winner redo")
+   "ww"           '(hydra-window/body :which-key "Manage windows")
+   "wz"           '(my/window-zoom :which-key "Window zoom")
+   "w/"           '(split-window-right :which-key "Split window vertically")
+   "w-"           '(split-window-below :which-key "Split window horizontal")
+   "w="           '(balance-windows :which-key "Balance windows")
 
-   "/"            '(counsel-projectile-rg :whick-key "search in project"))
+   ;; special ;;
+   "SPC"          '(my/blink-cursor :which-key "Blink cursor line")
+   "/"            '(counsel-projectile-rg :which-key "Search in project")
+   "?"            '(counsel-rg :which-key "Search from here")
+   "*"            '(counsel-projectile-rg-region-or-symbol :which-key "Search selection in project")
+   ";"            '(eval-expression :which-key "Eval expr"))
 
   ;; insert state binds ;;
   (general-define-key
@@ -1496,55 +1546,6 @@ Again credit goes to hlissner and his doom emacs config for these
    "l"            'undo-tree-visualize-right)
 
   ;; Hydras ;; NEED TO REDO THESE
-  ;; Buffer ;;
-  (defhydra hydra-buffer (:color blue :columns 3)
-      "
-                    Buffers :
-      "
-      ("n" next-buffer "next" :color red)
-      ("b" ivy-switch-buffer "switch")
-      ("B" ibuffer "ibuffer")
-      ("p" previous-buffer "prev" :color red)
-      ("C-b" buffer-menu "buffer menu")
-      ("N" evil-buffer-new "new")
-      ("d" kill-this-buffer "delete" :color red)
-      ("D" (progn (kill-this-buffer) (next-buffer)) "Delete" :color red)
-      ("s" save-buffer "save" :color red))
-
-  ;; Projectile ;;
-  (defhydra hydra-projectile
-      (:color teal :hint nil)
-      "
-         PROJECTILE: %(projectile-project-root)
-
-      ^Find File^        ^Search/Tags^        ^Buffers^       ^Cache^                    ^Project^
-      ^---------^        ^-----------^        ^-------^       ^-----^                    ^-------^
-      _f_: file          _a_: ag              _i_: Ibuffer    _c_: cache clear           _p_: switch proj
-      _F_: file dwim     _g_: update gtags    _b_: switch to  _x_: remove known project
-      _C-f_: file pwd    _o_: multi-occur   _s-k_: Kill all   _X_: cleanup non-existing
-      _r_: recent file   ^ ^                  ^ ^             _z_: cache current
-      _d_: dir"
-
-      ("a"   projectile-ag)
-      ("b"   projectile-switch-to-buffer)
-      ("c"   projectile-invalidate-cache)
-      ("d"   projectile-find-dir)
-      ("f"   projectile-find-file)
-      ("F"   projectile-find-file-dwim)
-      ("C-f" projectile-find-file-in-directory)
-      ("g"   ggtags-update-tags)
-      ("s-g" ggtags-update-tags)
-      ("i"   projectile-ibuffer)
-      ("K"   projectile-kill-buffers)
-      ("s-k" projectile-kill-buffers)
-      ("m"   projectile-multi-occur)
-      ("o"   projectile-multi-occur)
-      ("p"   projectile-switch-project)
-      ("r"   projectile-recentf)
-      ("x"   projectile-remove-known-project)
-      ("X"   projectile-cleanup-known-projects)
-      ("z"   projectile-cache-current-file)
-      ("q"   nil "cancel" :color blue))
 
   ;; Window ;;
   (defhydra hydra-window (:hint nil)
