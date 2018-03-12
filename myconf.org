@@ -341,9 +341,8 @@ Company with YouCompleteMe behavior
           company-dabbrev-downcase nil
           company-dabbrev-ignore-case nil
           company-dabbrev-code-other-buffers t)
-    (company-tng-configure-default)
     :config
-    (global-company-mode)
+    (add-hook 'my/post-init-hook 'global-company-mode)
     (add-hook 'evil-insert-state-exit-hook 'company-abort)
     (setq company-backends
         '((company-files
@@ -352,7 +351,9 @@ Company with YouCompleteMe behavior
             company-clang
             company-gtags
             )
-        (company-abbrev company-dabbrev))))
+          (company-abbrev company-dabbrev)))
+    (require 'company-tng) ; This is needed for some reason for company-tng-configure-default
+    (company-tng-configure-default))
 #+END_SRC
 ***** Company-c-headers
 #+BEGIN_SRC emacs-lisp
