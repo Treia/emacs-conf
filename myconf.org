@@ -562,6 +562,21 @@ Use key-sequence to escape from everything
     (push #'minibufferp evil-escape-inhibit-functions)
     (add-hook 'my/post-init-hook #'evil-escape-mode))
 #+END_SRC
+***** Evil-goggles
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-goggles
+    :commands evil-goggles-mode
+    :init
+    (setq evil-goggles-duration 0.2)
+    (add-hook 'my/post-init-hook #'evil-goggles-mode t))
+
+  (defun +evil-goggles/toggle ()
+    "Toggle evil goggles mode."
+    (interactive)
+    (if evil-goggles-mode
+        (evil-goggles-mode -1)
+      (evil-goggles-mode +1)))
+#+END_SRC
 ***** Evil-matchit
 Evil-matchit allows to jump to a matched tag with %
 #+BEGIN_SRC emacs-lisp
