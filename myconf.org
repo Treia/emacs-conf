@@ -697,7 +697,7 @@ Show diff in fringe
             (ignore (git-gutter))))
         (add-hook '+evil-esc-hook #'+version-control|update-git-gutter t))
     ;; Putting git gutter outside margins
-    (setq-default fringes-outside-margins)
+    (setq-default fringes-outside-margins t)
     (fringe-helper-define 'git-gutter-fr:added '(center repeated)
         "XXX.....")
     (fringe-helper-define 'git-gutter-fr:modified '(center repeated)
