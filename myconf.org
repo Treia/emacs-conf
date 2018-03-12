@@ -968,7 +968,10 @@ Prettier bullets
     (defun +my/open-organizer ()
       "Open the default organizer"
       (interactive)
-      (find-file (concat org-directory "/organizer.org"))))
+      (find-file (concat org-directory "/organizer.org")))
+    (with-eval-after-load 'doom-themes
+      (doom-themes-org-config)))
+
 #+END_SRC
 **** Syndicate
 Evil keybindings for org
@@ -1156,7 +1159,7 @@ Pretty icons
   (use-package doom-themes
     :demand t
     :config
-    (load-theme 'doom-one t))
+    (load-theme 'doom-peacock t))
 #+END_SRC
 
 **** hl-line
@@ -1224,7 +1227,7 @@ An even prettier modeline
   (use-package airline-themes
     :after powerline
     :config
-    (load-theme 'airline-doom-one t)
+    (load-theme 'airline-doom-molokai t)
     (setq airline-shortened-directory-length 20
         airline-utf-glyph-linenumber #xe0a1
         airline-utf-glyph-readonly #xe0a2
@@ -1617,19 +1620,19 @@ Again credit goes to hlissner and his doom emacs config for these
 *** Custom faces
 #+BEGIN_SRC emacs-lisp
   (custom-theme-set-faces
-    'doom-one
-    `(org-level-1 ((t (:height 1.0 :weight bold   :slant normal :foreground "#aa88ff" :background "#21272d" :underline nil :box (:line-width 4 :color "#21272d" :style nil)))))
-    `(org-level-2 ((t (:height 1.0 :weight bold   :slant normal :foreground "#88aaff" :background "#21272d" :underline nil :box (:line-width 4 :color "#21272d" :style nil)))))
-    `(org-level-3 ((t (:height 1.0 :weight normal :slant normal :foreground "#88ffff" :underline nil)))) ;; cyan
-    `(org-level-4 ((t (:height 1.0 :weight normal :slant normal :foreground "#66ffaa" :underline nil)))) ;; sea-green
-    `(org-level-5 ((t (:height 1.0 :weight normal :slant normal :foreground "#ffff66" :underline nil)))) ;; yellow
-    `(org-level-6 ((t (:height 1.0 :weight normal :slant normal :foreground "#ffaa00" :underline nil)))) ;; orange
-    `(org-level-7 ((t (:height 1.0 :weight normal :slant normal :foreground "#ff6666" :underline nil)))) ;; red
-    `(org-level-8 ((t (:height 1.0 :weight normal :slant normal :foreground "#ff66aa" :underline nil)))) ;; pink
-    `(avy-lead-face ((t (:foreground "#ffaf00"))))
-    `(avy-lead-face-0 ((t (:foreground "#5fd7ff"))))
-    `(avy-lead-face-1 ((t (:foreground "#66ffaa"))))
-    `(avy-lead-face-2 ((t (:foreground "#ff6666"))))
+    'doom-peacock
+    `(org-level-1 ((t (:height 1.0 :weight bold   :slant normal :foreground "#ff5d38" :background "#282725" :underline nil :box (:line-width 4 :color "#282725" :style nil)))))
+    `(org-level-2 ((t (:height 1.0 :weight bold   :slant normal :foreground "#cb4b16" :background "#282725" :underline nil :box (:line-width 4 :color "#282725" :style nil)))))
+    `(org-level-3 ((t (:height 1.0 :weight normal :slant normal :foreground "#bcd42a" :underline nil))))
+    `(org-level-4 ((t (:height 1.0 :weight normal :slant normal :foreground "#98be65" :underline nil))))
+    `(org-level-5 ((t (:height 1.0 :weight normal :slant normal :foreground "#26a6a6" :underline nil))))
+    `(org-level-6 ((t (:height 1.0 :weight normal :slant normal :foreground "#2257a0" :underline nil))))
+    `(org-level-7 ((t (:height 1.0 :weight normal :slant normal :foreground "#c678dd" :underline nil))))
+    `(org-level-8 ((t (:height 1.0 :weight normal :slant normal :foreground "#a9a1e1" :underline nil))))
+    `(avy-lead-face ((t (:foreground "#cb4b16"))))
+    `(avy-lead-face-0 ((t (:foreground "#2257a0"))))
+    `(avy-lead-face-1 ((t (:foreground "#98be65"))))
+    `(avy-lead-face-2 ((t (:foreground "#bcd42a"))))
     `(dired-subtree-depth-1-face ((t (:background "#23272e"))))
     `(dired-subtree-depth-2-face ((t (:background "#363d47"))))
     `(dired-subtree-depth-3-face ((t (:background "#4a5261"))))
@@ -1639,10 +1642,10 @@ Again credit goes to hlissner and his doom emacs config for these
     '(flyspell-duplicate ((t (:underline "yellow" :weight bold))))
     '(flyspell-incorrect ((t (:underline "yellow" :weight bold)))))
   (custom-set-faces
-   '(evil-goggles-delete-face           ((t (:foreground "#ff6c6b"))))
+   '(evil-goggles-delete-face           ((t (:foreground "#cb4b16"))))
    '(evil-goggles-paste-face            ((t (:foreground "#98be65"))))
    '(evil-goggles-yank-face             ((t (:foreground "#51afef"))))
-   '(evil-goggles-undo-redo-remove-face ((t (:foreground "#ff6c6b"))))
+   '(evil-goggles-undo-redo-remove-face ((t (:foreground "#cb4b16"))))
    '(evil-goggles-undo-redo-add-face    ((t (:foreground "#98be65"))))
    '(evil-goggles-undo-redo-change-face ((t (:foreground "#51afef")))))
   (custom-set-faces
