@@ -74,6 +74,7 @@
   - [[#functions][Functions]]
     - [[#buffers][Buffers]]
     - [[#files][Files]]
+    - [[#indentation][Indentation]]
     - [[#windows][Windows]]
   - [[#keybindings-1][Keybindings]]
   - [[#post-init][Post-init]]
@@ -269,11 +270,11 @@ Some options
 
 Indentation settings
 #+BEGIN_SRC emacs-lisp
-(setq-default
- indent-tabs-mode nil
- tab-always-indent t
- tab-width 4
- tab-stop-list (number-sequence 4 200 4))
+  (setq-default
+   indent-tabs-mode nil
+   tab-always-indent t
+   tab-width 4
+   tab-stop-list (number-sequence 4 200 4))
 #+END_SRC
 
 Remove trailing whitespaces on save. Do not remove trailing lines
@@ -742,6 +743,15 @@ Using persp so that we can create isolated workspaces, each with their own windo
         persp-save-dir (concat my/cache-dir "workspaces/"))
   (add-hook 'my/post-init-hook #'(lambda () (persp-mode 1)))
 
+  (defvar +workspaces-last-persp nil
+    "A variable that contains the last accessed perspective")
+  (defun +workspaces*track-last-persp (switch-fun &rest args)
+      (let ((before-persp (safe-persp-name (get-current-persp)))
+            (after-persp (apply switch-fun args)))
+        (when (not (string= before-persp after-persp))
+          (setq +workspaces-last-persp before-persp))))
+  (advice-add #'persp-switch :around #'+workspaces*track-last-persp)
+
   (defun +workspace-switch-last ()
     "Switches to the last workspace"
     (interactive)
@@ -800,19 +810,12 @@ Show keypress options
 *** Languages
 **** CC-mode
 #+BEGIN_SRC emacs-lisp
-(use-package cc-mode
-  :commands (c-mode c++-mode objc-mode java-mode)
-  :config
-  (defun my/c-mode-indent-setup-hook ()
-    "setup indentation according to 42's guidelines"
-    (setq-default c-basic-offset 4
-                  c-default-style "linux"
-                  c-tab-always-indent t
-                  indent-tabs-mode t
-                  indent-line-function 'insert-tab)
-    ;; buggy sometimes without setq as well
-    (setq c-basic-offset 4))
-  (add-hook 'c-mode-hook 'my/c-mode-indent-setup-hook))
+  (use-package cc-mode
+    :commands (c-mode c++-mode objc-mode java-mode)
+    :init
+    (setq c-basic-offset 4
+          c-default-style "linux"
+          c-backspace-function 'backward-delete-char))
 #+END_SRC
 
 **** Fish
@@ -943,7 +946,7 @@ Prettier bullets
                 org-agenda)
     :mode (("\\.org\\'" . org-mode)
         ("*Org Agenda*" . org-agenda-mode))
-    :config
+    :init
     (add-hook 'my/post-init-hook #'doom-themes-org-config)
     (setq org-directory "~/org"
           org-default-notes-file (concat org-directory "/notes.org")
@@ -953,8 +956,8 @@ Prettier bullets
           org-hide-leading-stars-before-indent-mode t
           org-return-follows-link t
           org-startup-folded t
-          org-startup-truncated t)
-
+          org-startup-indented t
+          org-startup-truncated nil)
     ;; Babel settings
     (setq org-src-fontify-natively t
           org-src-preserve-indentation t
@@ -1295,6 +1298,20 @@ Again credit goes to hlissner and his doom emacs config for these
   (interactive)
   (my/sudo-find-file (file-truename buffer-file-name)))
 #+END_SRC
+*** Indentation
+#+BEGIN_SRC emacs-lisp
+  (defun my/42-setup ()
+    "When working on 42 projects I need specific indentation settings"
+    (interactive)
+    (setq indent-tabs-mode t
+          c-tab-always-indent real))
+
+  (defun my/reset-indentation ()
+    "Go back to using spaces"
+    (interactive)
+    (setq indent-tabs-mode nil
+          c-tab-always-indent t))
+#+END_SRC
 *** Windows
 #+BEGIN_SRC emacs-lisp
   (defun my/window-zoom ()
@@ -1378,7 +1395,7 @@ Again credit goes to hlissner and his doom emacs config for these
    "ld"           '(persp-kill :which-key "Kill workspace")
    "ll"           '(persp-switch :which-key "Switch to workspace")
    "ls"           '(persp-save-state-to-file :which-key "Save current workspace")
-   "l TAB"        '(+workspace/switch-last :which-key "Switch to last workspace")
+   "l TAB"        '(+workspace-switch-last :which-key "Switch to last workspace")
 
    ;; o ;;
    "o"            '(:ignore t :which-key "Org")
@@ -1396,7 +1413,7 @@ Again credit goes to hlissner and his doom emacs config for these
    "pl"           '(+workspace-switch-project :which-key "Switch project workspace")
    "pp"           '(counsel-projectile-switch-project :which-key "Switch project")
    "pr"           '(projectile-recentf :which-key "Project recent files")
-   "p!"           '(projectile-run-command-in-root :which-key "Run command at porject root")
+   "p!"           '(projectile-run-command-in-root :which-key "Run command at project root")
 
    ;; s ;;
    "s"            'swiper
@@ -1429,12 +1446,6 @@ Again credit goes to hlissner and his doom emacs config for these
    "*"            '(counsel-projectile-rg-region-or-symbol :which-key "Search selection in project")
    ";"            '(eval-expression :which-key "Eval expr"))
 
-  ;; insert state binds ;;
-  (general-define-key
-   :states '(insert)
-   "C-x C-f"      'company-files
-   "TAB"          'tab-to-tab-stop)
-
   ;; motion states binds ;;
   (general-define-key
    :states '(motion)
@@ -1454,6 +1465,12 @@ Again credit goes to hlissner and his doom emacs config for these
    "K"            (concat ":m '<-2" (kbd "RET") "gv=gv"))
 
   ;; Mode-specific keybindings ;;
+
+  ;; C-mode ;;
+  (general-define-key
+   :states '(insert)
+   :keymaps 'c-mode-base-map
+   "TAB"          'tab-to-tab-stop)
 
   ;; Dired keybindings ;;
   (general-define-key
