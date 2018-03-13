@@ -154,20 +154,24 @@ Add archives to package.el and initialize and ensure use-package is installed.
       (package-refresh-contents)
       (package-install 'use-package))
     (require 'use-package)
-    (setq use-package-always-ensure t
+    (setq use-package-always-ensure nil
           use-package-verbose t))
 #+END_SRC
 
 Setting up quelpa
 #+BEGIN_SRC emacs-lisp
 (use-package quelpa
-  :config
+  :ensure t
+  :init
   (setq quelpa-update-melpa-p nil
         quelpa-checkout-melpa-p nil
         quelpa-melpa-recipe-stores nil
         quelpa-self-upgrade nil
-        quelpa-dir (expand-file-name "quelpa" my/packages-dir)))
-(use-package quelpa-use-package)
+        quelpa-dir (expand-file-name "quelpa" my/packages-dir))
+  :config
+  (package-initialize))
+(use-package quelpa-use-package
+  :ensure t)
 #+END_SRC
 
 ** General Configuration
@@ -331,6 +335,7 @@ Windows placement history with ~C-c <Left>~ and ~C-c <Right>~
 Company with YouCompleteMe behavior
 #+BEGIN_SRC emacs-lisp
   (use-package company
+    :ensure t
     :commands (company-mode global-company-mode company-complete
   company-complete-common company-manual-begin company-grab-line)
     :delight
@@ -358,6 +363,7 @@ Company with YouCompleteMe behavior
 ***** Company-c-headers
 #+BEGIN_SRC emacs-lisp
 (use-package company-c-headers
+    :ensure t
     :after company
     :config
     (add-to-list 'company-backends 'company-c-headers)
@@ -368,6 +374,7 @@ Company with YouCompleteMe behavior
 Shows documentation in the tooltip
 #+BEGIN_SRC emacs-lisp
   (use-package company-quickhelp
+    :ensure t
     :after pos-tip
     :init
     (set-face-attribute 'tooltip nil :background "#303030" :foreground "#c6c6c6")
@@ -378,13 +385,15 @@ Shows documentation in the tooltip
 
 pos-tip is a company-quickhelp dependancy and flycheck-postip
 #+BEGIN_SRC emacs-lisp
-  (use-package pos-tip)
+  (use-package pos-tip
+    :ensure t)
 #+END_SRC
 
 ***** Company-statistics
 Keep company completion statistics to improve sorting
 #+BEGIN_SRC emacs-lisp
   (use-package company-statistics
+    :ensure t
     :after company
     :delight
     :config
@@ -397,6 +406,7 @@ Keep company completion statistics to improve sorting
 Ivy, the generic completion frontend
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
+    :ensure t
     :demand t
     :delight
     :init
@@ -420,6 +430,7 @@ Ivy, the generic completion frontend
 Counsel, collection of Ivy-enhanced versions of common Emacs commands
 #+BEGIN_SRC emacs-lisp
   (use-package counsel
+    :ensure t
     :demand t
     :config
     (require 'counsel-projectile)
@@ -428,13 +439,15 @@ Counsel, collection of Ivy-enhanced versions of common Emacs commands
 
 Counsel-projectile provides more integration of counsel into projectile
 #+BEGIN_SRC emacs-lisp
-  (use-package counsel-projectile)
+  (use-package counsel-projectile
+    :ensure t)
 #+END_SRC
 
 ***** Swiper
 Swiper, an alternative to isearch making use of ivy
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
+    :ensure t
     :commands (swiper swiper-all)
     :delight)
 #+END_SRC
@@ -443,6 +456,7 @@ Swiper, an alternative to isearch making use of ivy
 Improved M-X
 #+BEGIN_SRC emacs-lisp
   (use-package smex
+    :ensure t
     :commands (smex smex-major-mode-commands)
     :config
     (setq smex-save-file (concat my/cache-dir "/smex-items"))
@@ -462,13 +476,15 @@ Inserts the header for 42 school
 **** Delight
 Used by use-package to hide or rename modes
 #+BEGIN_SRC emacs-lisp
-  (use-package delight)
+  (use-package delight
+     :ensure t)
 #+END_SRC
 **** Evil
 ***** Evil
 Install evil and activate evil-mode
 #+BEGIN_SRC emacs-lisp
   (use-package evil
+    :ensure t
     :demand t
     :init
     (setq evil-want-integration nil
@@ -540,6 +556,7 @@ These are bound to < > tab and S-tab in [[Keybindings]]
 Motions and text objects for delimited arguments in Evil, using 'a'
 #+BEGIN_SRC emacs-lisp
   (use-package evil-args
+    :ensure t
     :after evil
     :commands (evil-inner-arg evil-outer-arg
                       evil-forward-arg evil-backward-arg
@@ -550,6 +567,7 @@ Motions and text objects for delimited arguments in Evil, using 'a'
 Use key-sequence to escape from everything
 #+BEGIN_SRC emacs-lisp
   (use-package evil-escape
+    :ensure t
     :commands evil-escape-mode
     :delight
     :init
@@ -565,6 +583,7 @@ Use key-sequence to escape from everything
 ***** Evil-goggles
 #+BEGIN_SRC emacs-lisp
   (use-package evil-goggles
+    :ensure t
     :commands evil-goggles-mode
     :init
     (setq evil-goggles-duration 0.2)
@@ -581,6 +600,7 @@ Use key-sequence to escape from everything
 Evil-matchit allows to jump to a matched tag with %
 #+BEGIN_SRC emacs-lisp
   (use-package evil-matchit
+      :ensure t
       :after evil
       :config
       (global-evil-matchit-mode 1))
@@ -590,6 +610,7 @@ Evil-matchit allows to jump to a matched tag with %
 Port of nerd commenter from vim, allows quick and easy commenting of lines or paragraphs
 #+BEGIN_SRC emacs-lisp
   (use-package evil-nerd-commenter
+    :ensure t
     :commands
     (evilnc-comment-or-uncomment-lines
         evilnc-comment-or-uncomment-paragraphs))
@@ -599,6 +620,7 @@ Port of nerd commenter from vim, allows quick and easy commenting of lines or pa
 Evil-surround, port of vim-surround
 #+BEGIN_SRC emacs-lisp
   (use-package evil-surround
+      :ensure t
       :after evil
       :config
       (global-evil-surround-mode 1))
@@ -607,6 +629,7 @@ Evil-surround, port of vim-surround
 Evil-visualstar (* and # to search selection forward/backward)
 #+BEGIN_SRC emacs-lisp
   (use-package evil-visualstar
+      :ensure t
       :after evil
       :config
       (global-evil-visualstar-mode 1))
@@ -616,6 +639,7 @@ Evil-visualstar (* and # to search selection forward/backward)
 Treat code blocks as text object using 'b'
 #+BEGIN_SRC emacs-lisp
   (use-package evil-textobj-anyblock
+    :ensure t
     :commands (evil-textobj-anyblock-inner-block evil-textobj-anyblock-a-block))
 #+END_SRC
 
@@ -623,6 +647,7 @@ Treat code blocks as text object using 'b'
 Allows to search forward/backward with */#
 #+BEGIN_SRC emacs-lisp
   (use-package evil-visualstar
+    :ensure t
     :after evil
     :config
     (global-evil-visualstar-mode)
@@ -632,6 +657,7 @@ Allows to search forward/backward with */#
 Allows easier change of the fringe bitmaps
 #+BEGIN_SRC emacs-lisp
   (use-package fringe-helper
+    :ensure t
     :init
     (unless (fboundp 'define-fringe-bitmap)
       ;; doesn't exist in terminal Emacs; define it to prevent errors
@@ -642,6 +668,7 @@ Allows easier change of the fringe bitmaps
 Using flycheck to check syntax
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
+    :ensure t
     :demand t
     :delight
     :config
@@ -669,6 +696,7 @@ Using flycheck to check syntax
 Flycheck-pos-tip offers flycheck error in a popup
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck-pos-tip
+    :ensure t
     :after flycheck
     :config
     (setq flycheck-pos-tip-timeout 10
@@ -682,17 +710,20 @@ Flycheck-pos-tip offers flycheck error in a popup
 Better evil integration with evil-magit
 #+BEGIN_SRC emacs-lisp
   (use-package evil-magit
-      :after magit)
+    :ensure t
+    :after magit)
 #+END_SRC
 
 ***** Gitconfig-mode/Gitignore-mode
 Additional modes for gitconfig and gitignore files
 #+BEGIN_SRC emacs-lisp
   (use-package gitconfig-mode
+    :ensure t
     :mode "/\\.?git/?config$"
     :mode "/\\.gitmodules$")
 
   (use-package gitignore-mode
+    :ensure t
     :mode "/\\.gitignore$")
 #+END_SRC
 
@@ -700,6 +731,7 @@ Additional modes for gitconfig and gitignore files
 Show diff in fringe
 #+BEGIN_SRC emacs-lisp
   (use-package git-gutter-fringe
+    :ensure t
     :delight
     :config
     ;; Update git-gutter on focus (in case I was using git externally)
@@ -730,6 +762,7 @@ Show diff in fringe
 Browse versions of a file
 #+BEGIN_SRC emacs-lisp
   (use-package git-timemachine
+    :ensure t
     :commands (git-timemachine git-timemachine-toggle)
     :config
     (require 'magit-blame)
@@ -740,6 +773,7 @@ Browse versions of a file
 ***** Magit
 #+BEGIN_SRC emacs-lisp
   (use-package magit
+    :ensure t
     :commands (magit-status magit-blame magit-log-buffer-file magit-file-popup magit-log-all))
 #+END_SRC
 
@@ -747,6 +781,7 @@ Browse versions of a file
 Using persp so that we can create isolated workspaces, each with their own windows and buffers
 #+BEGIN_SRC emacs-lisp
 (use-package persp-mode
+  :ensure t
   :demand t
   :config
   (setq wg-morph-on nil
@@ -801,17 +836,20 @@ Using persp so that we can create isolated workspaces, each with their own windo
 **** General
 Use general to set up keybindings
 #+BEGIN_SRC emacs-lisp
-  (use-package general)
+  (use-package general
+    :ensure t)
 #+END_SRC
 **** Hydra
 #+BEGIN_SRC emacs-lisp
   (use-package hydra
+    :ensure t
     :demand t)
 #+END_SRC
 **** Which-key
 Show keypress options
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
+    :ensure t
     :demand t
     :delight
     :init
@@ -837,6 +875,7 @@ Show keypress options
 **** Fish
 #+BEGIN_SRC emacs-lisp
   (use-package fish-mode
+    :ensure t
     :commands (fish-mode)
     :delight fish-mode "Fish"
     :mode
@@ -846,6 +885,7 @@ Show keypress options
 **** Markdown
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
+    :ensure t
     :commands (markdown-mode)
     :delight markdown-mode "Markdown"
     :mode
@@ -861,6 +901,7 @@ Show keypress options
 Ace window to quickly jump between windows
 #+BEGIN_SRC emacs-lisp
   (use-package ace-window
+    :ensure t
     :init
     (setq aw-dispatch-always t
           aw-swap-invert t)
@@ -872,6 +913,7 @@ Ace window to quickly jump between windows
 Navigate around visible text
 #+BEGIN_SRC emacs-lisp
   (use-package avy
+    :ensure t
     :commands
     (avy-goto-word-1
     avy-goto-word-or-subword-1
@@ -892,6 +934,7 @@ Advanced buffer menu
 Grouped by project
 #+BEGIN_SRC emacs-lisp
   (use-package ibuffer-vc
+    :ensure t
     :init
     (add-hook 'ibuffer-hook
     (lambda ()
@@ -903,6 +946,7 @@ Grouped by project
 Use dumb-jump to jump to definition
 #+BEGIN_SRC emacs-lisp
   (use-package dumb-jump
+    :ensure t
     :commands (dumb-jump-go dumb-jump-quick-look dumb-jump-go-other-window
                dumb-jump-back dumb-jump-result-follow)
     :config
@@ -918,6 +962,7 @@ Use dumb-jump to jump to definition
 Move around a project
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
+    :ensure t
     :demand t
     :delight
     :init
@@ -946,6 +991,7 @@ Move around a project
 Prettier bullets
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
+    :ensure t
     :after org
     :hook
     (org-mode . org-bullets-mode)
@@ -992,13 +1038,15 @@ Prettier bullets
 Evil keybindings for org
 #+BEGIN_SRC emacs-lisp
   (use-package syndicate
-      :after org
-      :delight)
+    :ensure t
+    :after org
+    :delight)
 #+END_SRC
 **** toc-org
 Table of content in org-mode
 #+BEGIN_SRC emacs-lisp
   (use-package toc-org
+    :ensure t
     :after org
     :commands toc-org-enable
     :init (add-hook 'org-mode-hook #'toc-org-enable)
@@ -1039,6 +1087,7 @@ Modify some dired settings
 Add subtrees to dired
 #+BEGIN_SRC emacs-lisp
   (use-package dired-subtree
+    :ensure t
     :after dired)
 #+END_SRC
 
@@ -1046,6 +1095,7 @@ Add subtrees to dired
 Better highlighting in dired buffers
 #+BEGIN_SRC emacs-lisp
   (use-package dired-k
+    :ensure t
     :after dired
     :config
     (setq dired-k-style 'git)
@@ -1063,7 +1113,9 @@ Better highlighting in dired buffers
 **** Make
 Install make-executor
 #+BEGIN_SRC emacs-lisp
-  (use-package makefile-executor)
+  (use-package makefile-executor
+    :ensure t
+    :commands +make/run)
 #+END_SRC
 
 Function to run make on current project
@@ -1084,6 +1136,7 @@ Function to run make on current project
 **** Neotree
 #+BEGIN_SRC emacs-lisp
   (use-package neotree
+    :ensure t
     :commands (neotree neotree-show neotree-toggle
                        neotree-dir neotree-find)
     :config
@@ -1113,6 +1166,7 @@ Function to run make on current project
 Show colors on color values in the buffer
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-mode
+    :ensure t
     :commands rainbow-mode
     :init
     (add-hook 'css-mode #'rainbow-mode)
@@ -1123,6 +1177,7 @@ Show colors on color values in the buffer
 Change color values under cursor
 #+BEGIN_SRC emacs-lisp
   (use-package kurecolor
+    :ensure t
     :after rainbow-mode
     :config
     (defhydra hydra-kurecolor (:color pink :hint nil)
@@ -1141,6 +1196,7 @@ Change color values under cursor
 Install multi-term
 #+BEGIN_SRC emacs-lisp
   (use-package multi-term
+    :ensure t
     :commands (multi-term multi-term-next multi-term-prev)
     :config
     (setq multi-term-program (getenv "SHELL")
@@ -1152,6 +1208,7 @@ Install multi-term
 Pretty icons
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons
+    :ensure t
     :commands (all-the-icons-octicon all-the-icons-faicon all-the-icons-fileicon
                all-the-icons-wicon all-the-icons-material all-the-icons-alltheicon
                all-the-icons-install-fonts)
@@ -1172,6 +1229,7 @@ Pretty icons
 **** Doom-themes
 #+BEGIN_SRC emacs-lisp
   (use-package doom-themes
+    :ensure t
     :demand t
     :config
     (load-theme 'doom-peacock t))
@@ -1180,6 +1238,7 @@ Pretty icons
 **** hl-line
 #+BEGIN_SRC emacs-lisp
 (use-package hl-line
+  :ensure t
   :config
   (global-hl-line-mode))
 #+END_SRC
@@ -1187,6 +1246,7 @@ Pretty icons
 Highlight todos in comments
 #+BEGIN_SRC emacs-lisp
   (use-package hl-todo
+    :ensure t
     :hook (prog-mode . hl-todo-mode)
     :config
     (setq hl-todo-keyword-faces
@@ -1198,6 +1258,7 @@ Highlight todos in comments
 Used to highlight current cursor line
 #+BEGIN_SRC emacs-lisp
   (use-package nav-flash
+    :ensure t
     :commands nav-flash-show
     :init
     (defun my/blink-cursor (&rest _)
@@ -1217,6 +1278,7 @@ Used to highlight current cursor line
 Show line numbers
 #+BEGIN_SRC emacs-lisp
   (use-package nlinum-relative
+    :ensure t
     :hook
     (prog-mode . nlinum-relative-mode)
     :config
@@ -1229,6 +1291,7 @@ Show line numbers
 Better and prettier modeline
 #+BEGIN_SRC emacs-lisp
   (use-package powerline
+    :ensure t
     :demand t
     :config
     (powerline-center-evil-theme)
@@ -1240,19 +1303,22 @@ Better and prettier modeline
 An even prettier modeline
 #+BEGIN_SRC emacs-lisp
   (use-package airline-themes
+    :quelpa (airline-themes :fetcher github :repo "Treia/airline-themes")
     :after powerline
     :config
-    (load-theme 'airline-doom-molokai t)
     (setq airline-shortened-directory-length 20
-        airline-utf-glyph-linenumber #xe0a1
-        airline-utf-glyph-readonly #xe0a2
-        airline-utf-glyph-branch #xe0a0))
+          airline-utf-glyph-linenumber #xe0a1
+          airline-utf-glyph-readonly #xe0a2
+          airline-utf-glyph-branch #xe0a0
+          airline-minor-modes nil))
+    (load-theme 'airline-doom-molokai t)
 #+END_SRC
 
 **** Solaire-mode
 Change buffer color
 #+BEGIN_SRC emacs-lisp
   (use-package solaire-mode
+    :ensure t
     :after doom-themes
     :hook
     (after-change-major-mode . turn-on-solaire-mode)
@@ -1263,6 +1329,7 @@ Change buffer color
 Show ~ in front of empty lines like in vi
 #+BEGIN_SRC emacs-lisp
   (use-package vi-tilde-fringe
+    :ensure t
     :commands vi-tilde-fringe-mode
     :hook (my/post-init-hook . global-vi-tilde-fringe-mode))
 #+END_SRC
@@ -1666,6 +1733,8 @@ Again credit goes to hlissner and his doom emacs config for these
   (custom-set-faces
     '(diff-hl-change         ((t (:foreground "#ECBE7B"))))
     '(git-gutter-fr:modified ((t (:foreground "#ECBE7B")))))
+  (custom-set-faces
+    '(whitespace-tab ((t (:foregound "#2e2e2e" :background nil)))))
 #+END_SRC
 *** Adjust fringe
 #+BEGIN_SRC emacs-lisp

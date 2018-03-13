@@ -1,5 +1,6 @@
 cache/
 packages/elpa/
+packages/quelpa/
 .custom.el
 myconf.el
 init.elc
