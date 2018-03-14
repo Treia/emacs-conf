@@ -251,8 +251,8 @@
   (save-excursion
     (if (buffer-modified-p)
         (progn
-          (goto-char (point-min))
-          (if (search-forward "Updated" nil t)
+          (goto-char 653)
+          (if (search-forward "Updated" 662 t)
               (progn
                 (delete-region
                  (progn (beginning-of-line) (point))
