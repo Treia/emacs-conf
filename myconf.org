@@ -68,6 +68,7 @@
       - [[#nav-flash][Nav-flash]]
       - [[#nlinum-relative][Nlinum-relative]]
       - [[#powerline][Powerline]]
+      - [[#rainbow-delimiters][Rainbow-delimiters]]
       - [[#solaire-mode][Solaire-mode]]
       - [[#vi-tilde-fringe][vi-tilde-fringe]]
       - [[#whitespace-mode][Whitespace-mode]]
@@ -1312,6 +1313,16 @@ An even prettier modeline
     (load-theme 'airline-doom-one t)
 #+END_SRC
 
+**** Rainbow-delimiters
+Highlight delimiters with colors by depth
+#+BEGIN_SRC emacs-lisp
+(use-package rainbow-delimiters
+  :ensure t
+  :commands rainbow-delimiters-mode
+  :config
+  (setq rainbow-delimiters-max-face-count 3)
+  :init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+#+END_SRC
 **** Solaire-mode
 Change buffer color
 #+BEGIN_SRC emacs-lisp
