@@ -1206,7 +1206,7 @@ Change color values under cursor
 **** Tempbuf
 #+BEGIN_SRC emacs-lisp
 (use-package tempbuf
-  :load-path "./packages/local/tempbuf.el"
+  :load-path "./packages/local/"
   :config
   (add-hook 'dired-mode-hook 'turn-on-tempbuf-mode)
   (add-hook 'magit-pre-display-buffer-hook 'turn-on-tempbuf-mode)
