@@ -40,6 +40,7 @@
       - [[#which-key][Which-key]]
     - [[#languages][Languages]]
       - [[#cc-mode][CC-mode]]
+      - [[#dockerfile][Dockerfile]]
       - [[#fish][Fish]]
       - [[#markdown][Markdown]]
     - [[#navigation][Navigation]]
@@ -876,6 +877,13 @@ Show keypress options
           c-backspace-function 'backward-delete-char))
 #+END_SRC
 
+**** Dockerfile
+#+BEGIN_SRC emacs-lisp
+(use-package dockerfile-mode
+  :ensure t
+  :mode
+  ("Dockerfile\\"))
+#+END_SRC
 **** Fish
 #+BEGIN_SRC emacs-lisp
   (use-package fish-mode
