@@ -59,6 +59,7 @@
       - [[#make][Make]]
       - [[#neotree][Neotree]]
       - [[#rgb][RGB]]
+      - [[#tempbuf][Tempbuf]]
       - [[#term][Term]]
     - [[#ui-1][UI]]
       - [[#all-the-icons][All-the-icons]]
@@ -268,7 +269,8 @@ Some options
    word-wrap t
    sentence-end-double-space nil
    scroll-preserve-screen-position t
-   require-final-newline t)
+   require-final-newline t
+   bookmark-default-file (concat my/cache-dir "bookmarks"))
 
   (show-paren-mode)
 #+END_SRC
@@ -1193,6 +1195,17 @@ Change color values under cursor
       ("q" nil "cancel" :color blue)))
 #+END_SRC
 
+**** Tempbuf
+#+BEGIN_SRC emacs-lisp
+(use-package tempbuf
+  :load-path "./packages/local/tempbuf.el"
+  :config
+  (add-hook 'dired-mode-hook 'turn-on-tempbuf-mode)
+  (add-hook 'magit-pre-display-buffer-hook 'turn-on-tempbuf-mode)
+  (add-hook 'view-mode-hook 'turn-on-tempbuf-mode)
+  (add-hook 'custom-mode-hook 'turn-on-tempbuf-mode)
+  (add-hook 'man-mode-hook 'turn-on-tempbuf-mode))
+#+END_SRC
 **** Term
 Install multi-term
 #+BEGIN_SRC emacs-lisp
