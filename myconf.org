@@ -1501,6 +1501,7 @@ Again credit goes to hlissner and his doom emacs config for these
    ;; l ;;
    "l"            '(:ignore t :which-key "Workspaces")
    "ld"           '(persp-kill :which-key "Kill workspace")
+   "lf"           '(persp-load-state-from-file :whick-key "Load workspace from file")
    "ll"           '(persp-switch :which-key "Switch to workspace")
    "ls"           '(persp-save-state-to-file :which-key "Save current workspace")
    "l TAB"        '(+workspace-switch-last :which-key "Switch to last workspace")
