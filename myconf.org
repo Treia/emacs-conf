@@ -882,7 +882,7 @@ Show keypress options
 (use-package dockerfile-mode
   :ensure t
   :mode
-  ("Dockerfile\\"))
+  ("Dockerfile\\'"))
 #+END_SRC
 **** Fish
 #+BEGIN_SRC emacs-lisp
