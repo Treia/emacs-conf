@@ -258,7 +258,7 @@ Disable startup-message
 
 *** Font
 #+BEGIN_SRC emacs-lisp
-  (set-frame-font "PragmataPro for Powerline-12")
+  (set-frame-font "Roboto Mono for Powerline-11")
 #+END_SRC
 
 *** Editor
@@ -1209,7 +1209,6 @@ Change color values under cursor
   :load-path "./packages/local/"
   :config
   (add-hook 'dired-mode-hook 'turn-on-tempbuf-mode)
-  (add-hook 'magit-pre-display-buffer-hook 'turn-on-tempbuf-mode)
   (add-hook 'view-mode-hook 'turn-on-tempbuf-mode)
   (add-hook 'custom-mode-hook 'turn-on-tempbuf-mode)
   (add-hook 'man-mode-hook 'turn-on-tempbuf-mode))
@@ -1365,16 +1364,16 @@ Show ~ in front of empty lines like in vi
 #+END_SRC
 
 **** Whitespace-mode
-Show tabs
+Show tabs and lines longer than 80 characters in prog-mode (built-in)
 #+BEGIN_SRC emacs-lisp
   (use-package whitespace
     :delight
     :hook
     (prog-mode . whitespace-mode)
     :config
-    (setq whitespace-style '(face tabs tab-mark)))
+    (setq whitespace-line-column 80
+          whitespace-style '(face tabs tab-mark empty trailing lines-tail)))
 #+END_SRC
-k
 ** Functions
 Again credit goes to hlissner and his doom emacs config for these
 *** Buffers
