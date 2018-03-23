@@ -1329,7 +1329,8 @@ An even prettier modeline
           airline-utf-glyph-linenumber #xe0a1
           airline-utf-glyph-readonly #xe0a2
           airline-utf-glyph-branch #xe0a0
-          airline-minor-modes nil))
+          airline-minor-modes nil
+          airline-flycheck-status t))
     (load-theme 'airline-doom-one t)
 #+END_SRC
 
