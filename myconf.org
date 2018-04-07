@@ -31,6 +31,7 @@
       - [[#delight][Delight]]
       - [[#evil][Evil]]
       - [[#fringe-helper][Fringe-helper]]
+      - [[#rss-reader][Rss-reader]]
       - [[#syntax-checker][Syntax-checker]]
       - [[#version-control][Version control]]
       - [[#workspaces][Workspaces]]
@@ -669,6 +670,28 @@ Allows easier change of the fringe bitmaps
       (defun define-fringe-bitmap (&rest _))))
 #+END_SRC
 
+**** Rss-reader
+Using elfeed to read RSS
+#+BEGIN_SRC emacs-lisp
+(use-package elfeed
+  :ensure t
+  :commands elfeed
+  :config
+  (setq elfeed-db-directory (concat my/cache-dir "elfeed/db/")
+        elfeed-enclosure-default-dir (concat my/cache-dir "elfeed/enclosures/")
+        shr-max-image-proportion 0.6)
+  (make-directory elfeed-db-directory t))
+#+END_SRC
+
+Elfeed-org allows to keep the feed list in a clean org-mode file
+#+BEGIN_SRC emacs-lisp
+(use-package elfeed-org
+  :ensure t
+  :after elfeed
+  :config
+  (setq rmh-elfeed-org-files (list "~/org/elfeed.org"))
+  (elfeed-org))
+#+END_SRC
 **** Syntax-checker
 Using flycheck to check syntax
 #+BEGIN_SRC emacs-lisp
@@ -1619,6 +1642,42 @@ Again credit goes to hlissner and his doom emacs config for these
    "U"            'dired-unmark-all-files
    "x"            'dired-do-flagged-delete
    "+"            'dired-create-directory)
+
+  ;; Elfeed
+  (general-define-key
+   :states '(normal)
+   :keymaps 'elfeed-search-mode-map
+   "RET"          'elfeed-search-show-entry
+   "S-RET"        'elfeed-search-browse-url
+   "q"            'quit-window
+   "R"            'elfeed-search-update--force
+   "r"            'elfeed-search-fetch
+   "S"            'elfeed-search-set-filter
+   "s"            'elfeed-search-live-filter
+   "y"            'elfeed-search-yank
+
+   :states '(normal visual)
+   :keymaps 'elfeed-search-mode-map
+   "+"            'elfeed-search-tag-all
+   "-"            'elfeed-search-untag-all
+   "u"            'elfeed-search-tag-all-unread
+   "U"            'elfeed-search-untag-all-unread
+
+   :states '(normal)
+   :keymaps 'elfeed-show-mode-map
+   "S-RET"        'elfeed-show-visit
+   "+"            'elfeed-show-tag
+   "-"            'elfeed-show-untag
+   "["            'elfeed-show-prev
+   "]"            'elfeed-show-next
+   "A"            'elfeed-show-add-enclosure-to-playlist
+   "d"            'elfeed-show-save-enclosure
+   "gj"           'elfeed-show-prev
+   "gk"           'elfeed-show-next
+   "gr"           'elfeed-show-refresh
+   "P"            'elfeed-show-play-enclosure
+   "q"            'elfeed-kill-buffer
+   "s"            'elfeed-show-new-live-search)
 
   ;; Flycheck
   (general-define-key
