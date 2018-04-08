@@ -701,6 +701,7 @@ Using flycheck to check syntax
     :delight
     :config
     (setq flycheck-clang-args "-Wall -Wextra -Werror"
+          flycheck-clang-include-path (list "." ".." "../include" "../includes" "../../include" "../../includes" "../../../include" "../../../includes" "./include" "./includes" "./libft/include" "./libft/includes" "../libft/include" "../libft/includes" "../../libft/include" "../../libft/includes" "../../../libft/include" "../../../libft/includes")
           flycheck-indication-mode 'right-fringe ;; because we already use git-gutter in the fringe
           flycheck-check-syntax-automatically '(save mode-enabled)) ;; show errors on save
     (global-flycheck-mode)
