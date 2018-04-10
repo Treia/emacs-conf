@@ -1730,6 +1730,27 @@ Again credit goes to hlissner and his doom emacs config for these
    "s"            'neotree-enter-horizontal-split
    "v"            'neotree-enter-vertical-split)
 
+  (general-define-key
+   :states '(normal visual insert emacs)
+   :prefix "SPC"
+   :non-normal-prefix "C-SPC"
+   :keymaps 'markdown-mode-map
+   "m"            '(:ignore t :which-key "Markdown")
+   "mb"           '(markdown-insert-bold :which-key "Bold")
+   "mC"           '(markdown-insert-gfm-code-block :which-key "GFM Code")
+   "mc"           '(markdown-insert-code :which-key "Code")
+   "mf"           '(markdown-insert-footnote :which-ley "Footnote")
+   "mh"           '(markdown-insert-header :which-key "Header")
+   "mI"           '(markdown-insert-image :which-key "Image")
+   "mi"           '(markdown-insert-italic :which-key "Italic")
+   "mk"           '(markdown-insert-kbd :which-key "Keyboard")
+   "ml"           '(markdown-insert-link :whick-key "Link")
+   "mo"           '(markdown-open :which-key "Open")
+   "mp"           '(markdown-live-preview-mode :which-key "Preview")
+   "mq"           '(markdown-insert-blockquote :which-key "Blockquote")
+   "mS"           '(markdown-insert-strike-through :which-key "Strike-through")
+   "ms"           '(markdown-mode-style-map :which-key "Style"))
+
   ;; Undo-tree ;;
   (general-define-key
    :states '(motion)
