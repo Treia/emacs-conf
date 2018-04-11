@@ -384,7 +384,7 @@ Shows documentation in the tooltip
     :init
     (set-face-attribute 'tooltip nil :background "#303030" :foreground "#c6c6c6")
     :config
-    (setq company-quickhelp-delay nil)
+    (setq company-quickhelp-delay 0.1)
     (company-quickhelp-mode))
 #+END_SRC
 
