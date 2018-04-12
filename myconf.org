@@ -810,7 +810,27 @@ Browse versions of a file
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :ensure t
-    :commands (magit-status magit-blame magit-log-buffer-file magit-file-popup magit-log-all))
+    :commands (magit-status magit-blame magit-log-buffer-file magit-file-popup magit-log-all)
+    :config
+    (defun +magit/quit (&optional _kill-buffer)
+      "Clean up magit buffers after quitting magit-status."
+      (interactive)
+      (let ((buffers (magit-mode-get-buffers)))
+        (magit-restore-window-configuration)
+        (mapc #'+magit--kill-buffer buffers)))
+
+    (defun +magit--kill-buffer (buf)
+      "Kill designated magit buffer."
+      (when (and (bufferp buf) (buffer-live-p buf))
+        (let ((process (get-buffer-process buf)))
+          (if (not (processp process))
+              (kill-buffer buf)
+            (with-current-buffer bug
+              (if (process-live-p process)
+                  (run-with-timer 5 nil #'+magit--kill-buffer buf)
+                (kill-process process)
+                (kill-buffer buf))))))))
+
 #+END_SRC
 
 **** Workspaces
@@ -1720,6 +1740,7 @@ Again credit goes to hlissner and his doom emacs config for these
    "l"            'evil-forward-char
    "q"            'quit-window)
 
+  ;; Neotree
   (general-define-key
    :states '(normal)
    :keymaps 'neotree-mode-map
@@ -1738,6 +1759,12 @@ Again credit goes to hlissner and his doom emacs config for these
    "s"            'neotree-enter-horizontal-split
    "v"            'neotree-enter-vertical-split)
 
+  ;; Magit-status-mode
+  (general-define-key
+   :keymaps 'magit-status-mode-map
+   [remap magit-mode-bury-buffer] #'+magit/quit)
+
+  ;; Markdown-mode
   (general-define-key
    :states '(normal visual insert emacs)
    :prefix "SPC"
