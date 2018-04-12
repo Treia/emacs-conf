@@ -787,6 +787,13 @@ Show diff in fringe
     (global-git-gutter-mode))
 #+END_SRC
 
+***** Git-link
+Create URLs for files and commits in Github/Bitbucket/GitLab... repos
+#+BEGIN_SRC emacs-lisp
+(use-package git-link
+  :ensure t
+  :commands (git-link git-link-commit git-link-homepage))
+#+END_SRC
 ***** Git-timemachine
 Browse versions of a file
 #+BEGIN_SRC emacs-lisp
@@ -1517,6 +1524,7 @@ Again credit goes to hlissner and his doom emacs config for these
    "g"            '(:ignore t :which-key "Git")
    "gb"           '(magit-blame :which-key "Git blame")
    "gf"           '(magit-file-popup :which-key "Git log current file")
+   "gL"           '(git-link :which-key "Git link")
    "gl"           '(magit-log-all :which-key "Git log all")
    "gs"           '(magit-status :which-key "Git status")
    "gt"           '(git-timemachine :which-key "Git time machine")
@@ -1525,7 +1533,7 @@ Again credit goes to hlissner and his doom emacs config for these
    "j"            '(:ignore t :which-key "Jump to")
    "jt"           '(avy-goto-word-1 :which-key "Word")
    "jl"           '(avy-goto-line :which-key "Line")
-   "jo"           '(avy-org-goto-heading-timer :whick-key "Org heading")
+   "jo"           '(avy-org-goto-heading-timer :which-key "Org heading")
 
    ;; h ;;
    "h"            '(header-insert :which-key "42header")
@@ -1533,7 +1541,7 @@ Again credit goes to hlissner and his doom emacs config for these
    ;; l ;;
    "l"            '(:ignore t :which-key "Workspaces")
    "ld"           '(persp-kill :which-key "Kill workspace")
-   "lf"           '(persp-load-state-from-file :whick-key "Load workspace from file")
+   "lf"           '(persp-load-state-from-file :which-key "Load workspace from file")
    "ll"           '(persp-switch :which-key "Switch to workspace")
    "ls"           '(persp-save-state-to-file :which-key "Save current workspace")
    "l TAB"        '(+workspace-switch-last :which-key "Switch to last workspace")
@@ -1744,7 +1752,7 @@ Again credit goes to hlissner and his doom emacs config for these
    "mI"           '(markdown-insert-image :which-key "Image")
    "mi"           '(markdown-insert-italic :which-key "Italic")
    "mk"           '(markdown-insert-kbd :which-key "Keyboard")
-   "ml"           '(markdown-insert-link :whick-key "Link")
+   "ml"           '(markdown-insert-link :which-key "Link")
    "mo"           '(markdown-open :which-key "Open")
    "mp"           '(markdown-live-preview-mode :which-key "Preview")
    "mq"           '(markdown-insert-blockquote :which-key "Blockquote")
