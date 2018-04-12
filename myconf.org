@@ -825,7 +825,7 @@ Browse versions of a file
         (let ((process (get-buffer-process buf)))
           (if (not (processp process))
               (kill-buffer buf)
-            (with-current-buffer bug
+            (with-current-buffer buf
               (if (process-live-p process)
                   (run-with-timer 5 nil #'+magit--kill-buffer buf)
                 (kill-process process)
