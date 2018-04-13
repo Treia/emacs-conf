@@ -1553,9 +1553,12 @@ Again credit goes to hlissner and his doom emacs config for these
 
    ;; j ;;
    "j"            '(:ignore t :which-key "Jump to")
-   "jt"           '(avy-goto-word-1 :which-key "Word")
+   "jb"           '(dumb-jump-back :which-key "Back")
+   "jD"           '(dumb-jump-go-other-window "Definition in other window")
+   "jd"           '(dumb-jump-go :which-key "Definition")
    "jl"           '(avy-goto-line :which-key "Line")
    "jo"           '(avy-org-goto-heading-timer :which-key "Org heading")
+   "jt"           '(avy-goto-word-1 :which-key "Word")
 
    ;; h ;;
    "h"            '(header-insert :which-key "42header")
