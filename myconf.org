@@ -1404,7 +1404,9 @@ Change buffer color
     :hook
     (after-change-major-mode . turn-on-solaire-mode)
     :config
-    (solaire-mode-swap-bg))
+    (solaire-mode-swap-bg)
+    (add-hook 'focus-in-hook #'solaire-mode-reset)
+    (add-hook 'org-capture-mode-hook #'turn-on-solaire-mode))
 #+END_SRC
 **** vi-tilde-fringe
 Show ~ in front of empty lines like in vi
