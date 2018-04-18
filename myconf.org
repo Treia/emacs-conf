@@ -57,6 +57,7 @@
       - [[#syndicate][Syndicate]]
       - [[#toc-org][toc-org]]
     - [[#tools][Tools]]
+      - [[#counsel-dash][Counsel-dash]]
       - [[#dired][Dired]]
       - [[#make][Make]]
       - [[#neotree][Neotree]]
@@ -1116,6 +1117,30 @@ Table of content in org-mode
     )
 #+END_SRC
 *** Tools
+**** Counsel-dash
+Look up dash documentation through counsel
+#+BEGIN_SRC emacs-lisp
+(use-package counsel-dash
+  :ensure t
+  :commands (counsel-dash counsel-dash-install-docset)
+  :init
+  (add-hook 'emacs-lisp-mode-hook (lambda () (setq-local counsel-dash-docsets '("Emacs Lisp"))))
+  (add-hook 'scala-mode-hook (lambda () (setq-local counsel-dash-docsets '("Scala" "Akka" "Play_Scala" "Java"))))
+  (add-hook 'java-mode-hook (lambda () (setq-local counsel-dash-docsets '("Java" "Play_Java"))))
+  (add-hook 'rust-mode-hook (lambda () (setq-local counsel-dash-docsets '("Rust"))))
+  (add-hook 'clojure-mode-hook (lambda () (setq-local counsel-dash-docsets '("Clojure"))))
+  (add-hook 'haskell-mode-hook (lambda () (setq-local counsel-dash-docsets '("Haskell"))))
+  (add-hook 'sh-mode-hook (lambda () (setq-local counsel-dash-docsets '("Bash"))))
+  (add-hook 'c-mode-hook (lambda () (setq-local counsel-dash-docsets '("C"))))
+  (add-hook 'c++-mode-hook (lambda () (setq-local counsel-dash-docsets '("C++"))))
+  (add-hook 'js2-mode-hook (lambda () (setq-local counsel-dash-docsets '("JavaScript"))))
+  (add-hook 'js-mode-hook (lambda () (setq-local counsel-dash-docsets '("JavaScript"))))
+  (add-hook 'html-mode-hook (lambda () (setq-local counsel-dash-docsets '("HTML" "Javascript"))))
+  (add-hook 'python-mode-hook (lambda () (setq-local counsel-dash-docsets '("Python 3"))))
+
+  :config
+  (setq counsel-dash-docsets-path (concat my/cache-dir "docsets")))
+#+END_SRC
 **** Dired
 ***** Dired
 Modify some dired settings
