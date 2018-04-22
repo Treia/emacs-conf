@@ -56,7 +56,6 @@
       - [[#toc-org][toc-org]]
     - [[#tools][Tools]]
       - [[#counsel-dash][Counsel-dash]]
-      - [[#delight][Delight]]
       - [[#dired][Dired]]
       - [[#fringe-helper][Fringe-helper]]
       - [[#make][Make]]
@@ -344,7 +343,6 @@ Company with YouCompleteMe behavior
     :ensure t
     :commands (company-mode global-company-mode company-complete
   company-complete-common company-manual-begin company-grab-line)
-    :delight
     :init
     (setq company-idle-delay 0.1
           company-tooltip-limit 15
@@ -401,7 +399,6 @@ Keep company completion statistics to improve sorting
   (use-package company-statistics
     :ensure t
     :after company
-    :delight
     :config
     (setq company-statistics-file (concat my/cache-dir "company-stats-cache.el"))
     (company-statistics-mode))
@@ -414,7 +411,6 @@ Ivy, the generic completion frontend
   (use-package ivy
     :ensure t
     :demand t
-    :delight
     :init
     (add-hook 'my/post-init-hook #'ivy-mode)
     :config
@@ -454,8 +450,7 @@ Swiper, an alternative to isearch making use of ivy
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
     :ensure t
-    :commands (swiper swiper-all)
-    :delight)
+    :commands (swiper swiper-all))
 #+END_SRC
 
 ***** Smex
@@ -526,7 +521,6 @@ Also installing undo-tree, required by evil
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
     :demand t
-    :delight
     :init
     (setq undo-tree-visualizer-timestamps t
           undo-tree-visualizer-diff t
@@ -570,7 +564,6 @@ Use key-sequence to escape from everything
   (use-package evil-escape
     :ensure t
     :commands evil-escape-mode
-    :delight
     :init
     (setq evil-escape-excluded-states '(normal visual multiedit emacs motion)
           evil-escape-excluded-major-modes '(neotree-mode)
@@ -682,7 +675,6 @@ Using flycheck to check syntax
   (use-package flycheck
     :ensure t
     :demand t
-    :delight
     :config
     (setq flycheck-clang-args "-Wall -Wextra -Werror"
           flycheck-clang-include-path (list "." ".." "../include" "../includes" "../../include" "../../includes" "../../../include" "../../../includes" "./include" "./includes" "./libft/include" "./libft/includes" "../libft/include" "../libft/includes" "../../libft/include" "../../libft/includes" "../../../libft/include" "../../../libft/includes")
@@ -745,7 +737,6 @@ Show diff in fringe
 #+BEGIN_SRC emacs-lisp
   (use-package git-gutter-fringe
     :ensure t
-    :delight
     :config
     ;; Update git-gutter on focus (in case I was using git externally)
     (add-hook 'focus-in-hook #'git-gutter:update-all-windows)
@@ -891,7 +882,6 @@ Show keypress options
   (use-package which-key
     :ensure t
     :demand t
-    :delight
     :init
     (setq which-key-idle-delay 0.1
           which-key-add-column-padding 1
@@ -924,7 +914,6 @@ Show keypress options
   (use-package fish-mode
     :ensure t
     :commands (fish-mode)
-    :delight fish-mode "Fish"
     :mode
     ("\\.fish\\'"))
 #+END_SRC
@@ -934,7 +923,6 @@ Show keypress options
   (use-package markdown-mode
     :ensure t
     :commands (markdown-mode)
-    :delight markdown-mode "Markdown"
     :mode
     ("INSTALL\\'"
     "CONTRIBUTORS\\'"
@@ -1011,7 +999,6 @@ Move around a project
   (use-package projectile
     :ensure t
     :demand t
-    :delight
     :init
     (setq projectile-completion-system 'ivy
           projectile-switch-project-action 'projectile-find-file
@@ -1086,8 +1073,7 @@ Evil keybindings for org
 #+BEGIN_SRC emacs-lisp
   (use-package syndicate
     :ensure t
-    :after org
-    :delight)
+    :after org)
 #+END_SRC
 **** toc-org
 Table of content in org-mode
@@ -1121,12 +1107,6 @@ Look up dash documentation through counsel
   (add-hook 'html-mode-hook (lambda () (setq-local counsel-dash-docsets '("HTML" "Javascript"))))
   (add-hook 'python-mode-hook (lambda () (setq-local counsel-dash-docsets '("Python 3"))))
   (setq counsel-dash-docsets-path (concat my/cache-dir "docsets")))
-#+END_SRC
-**** Delight
-Used by use-package to hide or rename modes
-#+BEGIN_SRC emacs-lisp
-  (use-package delight
-     :ensure t)
 #+END_SRC
 **** Dired
 ***** Dired
@@ -1444,7 +1424,6 @@ Show ~ in front of empty lines like in vi
 Show tabs and lines longer than 80 characters in prog-mode (built-in)
 #+BEGIN_SRC emacs-lisp
   (use-package whitespace
-    :delight
     :hook
     (prog-mode . whitespace-mode)
     :config
