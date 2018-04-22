@@ -29,6 +29,7 @@
     - [[#features][Features]]
       - [[#42-header][42 Header]]
       - [[#evil][Evil]]
+      - [[#fringe-helper][Fringe-helper]]
       - [[#rss-reader][Rss-reader]]
       - [[#syntax-checker][Syntax-checker]]
       - [[#version-control][Version control]]
@@ -57,10 +58,10 @@
     - [[#tools][Tools]]
       - [[#counsel-dash][Counsel-dash]]
       - [[#dired][Dired]]
-      - [[#fringe-helper][Fringe-helper]]
       - [[#make][Make]]
       - [[#neotree][Neotree]]
       - [[#rgb][RGB]]
+      - [[#smartparens][Smartparens]]
       - [[#tempbuf][Tempbuf]]
       - [[#term][Term]]
     - [[#ui-1][UI]]
@@ -152,7 +153,9 @@ Add archives to package.el and initialize and ensure use-package is installed.
   (eval-when-compile
     (require 'package)
 
-
+    (setq package-archives '(("org"       . "http://orgmode.org/elpa/")
+                            ("gnu"       . "http://elpa.gnu.org/packages/")
+                            ("melpa"     . "https://melpa.org/packages/")))
     (package-initialize)
     (unless (package-installed-p 'use-package)
       (package-refresh-contents)
@@ -637,6 +640,17 @@ Allows to search forward/backward with */#
     (global-evil-visualstar-mode)
     )
 #+END_SRC
+**** Fringe-helper
+Allows easier change of the fringe bitmaps
+#+BEGIN_SRC emacs-lisp
+  (use-package fringe-helper
+    :ensure t
+    :init
+    (unless (fboundp 'define-fringe-bitmap)
+      ;; doesn't exist in terminal Emacs; define it to prevent errors
+      (defun define-fringe-bitmap (&rest _))))
+#+END_SRC
+
 **** Rss-reader
 Using elfeed to read RSS
 #+BEGIN_SRC emacs-lisp
@@ -1154,17 +1168,6 @@ Better highlighting in dired buffers
     (add-hook 'dired-after-readin-hook #'dired-k-no-revert))
 #+END_SRC
 
-**** Fringe-helper
-Allows easier change of the fringe bitmaps
-#+BEGIN_SRC emacs-lisp
-  (use-package fringe-helper
-    :ensure t
-    :init
-    (unless (fboundp 'define-fringe-bitmap)
-      ;; doesn't exist in terminal Emacs; define it to prevent errors
-      (defun define-fringe-bitmap (&rest _))))
-#+END_SRC
-
 **** Make
 Install make-executor
 #+BEGIN_SRC emacs-lisp
@@ -1246,6 +1249,33 @@ Change color values under cursor
       ("q" nil "cancel" :color blue)))
 #+END_SRC
 
+**** Smartparens
+Automatically close delimiters and blocks
+#+BEGIN_SRC emacs-lisp
+(use-package smartparens
+  :ensure t
+  :config
+  (setq sp-autowrap-region nil
+        sp-highlight-pair-overlay nil
+        sp-cancel-autoskip-on-backward-movement nil
+        sp-show-pair-delay 0
+        sp-max-pair-length 3)
+  (require 'smartparens-config)
+  (smartparens-global-mode)
+  (add-hook 'evil-replace-state-entry-hook #'turn-off-smartparens-mode)
+  (add-hook 'evil-replace-state-exit-hook #'turn-on-smartparens-mode)
+  (let ((unless-list '(sp-point-before-word-p
+                         sp-point-after-word-p
+                         sp-point-before-same-p)))
+      (sp-pair "'"  nil :unless unless-list)
+      (sp-pair "\"" nil :unless unless-list))
+    (sp-pair "{" nil :post-handlers '(("||\n[i]" "RET") ("| " " "))
+             :unless '(sp-point-before-word-p sp-point-before-same-p))
+    (sp-pair "(" nil :post-handlers '(("||\n[i]" "RET") ("| " " "))
+             :unless '(sp-point-before-word-p sp-point-before-same-p))
+    (sp-pair "[" nil :post-handlers '(("| " " "))
+             :unless '(sp-point-before-word-p sp-point-before-same-p)))
+#+END_SRC
 **** Tempbuf
 #+BEGIN_SRC emacs-lisp
 (use-package tempbuf
