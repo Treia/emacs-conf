@@ -28,9 +28,7 @@
       - [[#ivy][Ivy]]
     - [[#features][Features]]
       - [[#42-header][42 Header]]
-      - [[#delight][Delight]]
       - [[#evil][Evil]]
-      - [[#fringe-helper][Fringe-helper]]
       - [[#rss-reader][Rss-reader]]
       - [[#syntax-checker][Syntax-checker]]
       - [[#version-control][Version control]]
@@ -58,7 +56,9 @@
       - [[#toc-org][toc-org]]
     - [[#tools][Tools]]
       - [[#counsel-dash][Counsel-dash]]
+      - [[#delight][Delight]]
       - [[#dired][Dired]]
+      - [[#fringe-helper][Fringe-helper]]
       - [[#make][Make]]
       - [[#neotree][Neotree]]
       - [[#rgb][RGB]]
@@ -480,12 +480,6 @@ Inserts the header for 42 school
     (add-hook 'before-save-hook 'header-update))
 #+END_SRC
 
-**** Delight
-Used by use-package to hide or rename modes
-#+BEGIN_SRC emacs-lisp
-  (use-package delight
-     :ensure t)
-#+END_SRC
 **** Evil
 ***** Evil
 Install evil and activate evil-mode
@@ -660,17 +654,6 @@ Allows to search forward/backward with */#
     (global-evil-visualstar-mode)
     )
 #+END_SRC
-**** Fringe-helper
-Allows easier change of the fringe bitmaps
-#+BEGIN_SRC emacs-lisp
-  (use-package fringe-helper
-    :ensure t
-    :init
-    (unless (fboundp 'define-fringe-bitmap)
-      ;; doesn't exist in terminal Emacs; define it to prevent errors
-      (defun define-fringe-bitmap (&rest _))))
-#+END_SRC
-
 **** Rss-reader
 Using elfeed to read RSS
 #+BEGIN_SRC emacs-lisp
@@ -1137,9 +1120,13 @@ Look up dash documentation through counsel
   (add-hook 'js-mode-hook (lambda () (setq-local counsel-dash-docsets '("JavaScript"))))
   (add-hook 'html-mode-hook (lambda () (setq-local counsel-dash-docsets '("HTML" "Javascript"))))
   (add-hook 'python-mode-hook (lambda () (setq-local counsel-dash-docsets '("Python 3"))))
-
-  :config
   (setq counsel-dash-docsets-path (concat my/cache-dir "docsets")))
+#+END_SRC
+**** Delight
+Used by use-package to hide or rename modes
+#+BEGIN_SRC emacs-lisp
+  (use-package delight
+     :ensure t)
 #+END_SRC
 **** Dired
 ***** Dired
@@ -1196,6 +1183,17 @@ Better highlighting in dired buffers
 
     (add-hook 'dired-initial-position-hook #'dired-k)
     (add-hook 'dired-after-readin-hook #'dired-k-no-revert))
+#+END_SRC
+
+**** Fringe-helper
+Allows easier change of the fringe bitmaps
+#+BEGIN_SRC emacs-lisp
+  (use-package fringe-helper
+    :ensure t
+    :init
+    (unless (fboundp 'define-fringe-bitmap)
+      ;; doesn't exist in terminal Emacs; define it to prevent errors
+      (defun define-fringe-bitmap (&rest _))))
 #+END_SRC
 
 **** Make
