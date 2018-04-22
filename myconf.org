@@ -619,16 +619,6 @@ Evil-surround, port of vim-surround
       :config
       (global-evil-surround-mode 1))
 #+END_SRC
-
-Evil-visualstar (* and # to search selection forward/backward)
-#+BEGIN_SRC emacs-lisp
-  (use-package evil-visualstar
-      :ensure t
-      :after evil
-      :config
-      (global-evil-visualstar-mode 1))
-#+END_SRC
-
 ***** Evil-textobj-anyblock
 Treat code blocks as text object using 'b'
 #+BEGIN_SRC emacs-lisp
@@ -708,7 +698,6 @@ Flycheck-pos-tip offers flycheck error in a popup
           flycheck-display-errors-delay 0.5)
     (flycheck-pos-tip-mode))
 #+END_SRC
-
 ***** ☞ TODO When Emacs 26 comes out might have to get rid of it
 **** Version control
 ***** Evil-magit
