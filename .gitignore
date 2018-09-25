@@ -1,0 +1,9 @@
+cache/
+packages/elpa/
+packages/quelpa/
+.custom.el
+myconf.el
+init.elc
+myconf.elc
+straight/
+auto-save-list/
