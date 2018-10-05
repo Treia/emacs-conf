@@ -28,6 +28,7 @@
  ;; f for files
  "f" '(:ignore t :which-key "files")
  "ff" '(counsel-find-file :which-key "find file")
+ "fp" '(find-file-at-point :which-key "find file at point")
  ;; TODO : add function to open with sudo
 
  ;; g for git
