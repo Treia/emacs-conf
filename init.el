@@ -28,23 +28,28 @@
 ;; Core packages
 (use-package general)
 (use-package magit)
+(use-package evil-magit)
 (use-package ivy
   :config
   (ivy-mode 1))
 (use-package counsel)
 (use-package swiper)
-(use-package helpful
-  :config
-  (general-define-key
-   "C-h C" 'helpful-command
-   "C-h F" 'helpful-function
-   "C-h f" 'helpful-callable
-   "C-h v" 'helpful-variable
-   "C-h k" 'helpful-key))
+(use-package helpful)
+  ;; :config
+  ;; (general-define-key
+  ;;  "C-h C" 'helpful-command
+  ;;  "C-h F" 'helpful-function
+  ;;  "C-h f" 'helpful-callable
+  ;;  "C-h v" 'helpful-variable
+  ;;  "C-h k" 'helpful-key))
+;; TODO : rebind those to some usable key (probably prefix-h)
+
 (use-package which-key
   :config
   (which-key-mode)
-  (setq which-key-sort-order 'which-key-prefix-then-key-order))
+  (setq which-key-add-column-padding 1
+	which-key-idle-delay 0.2
+	which-key-sort-order 'which-key-prefix-then-key-order))
 
 ;; Core keybindings
 (general-define-key
@@ -53,7 +58,13 @@
  "C-s" 'swiper)
 
 ;; Load local config
-(load "~/.emacs.d/visual.el")
 (load "~/.emacs.d/evil.el")
 (load "~/.emacs.d/keybindings.el")
 (load "~/.emacs.d/navigation.el")
+(load "~/.emacs.d/visual.el")
+
+;; TODO : move magit stuff to a versioning.el
+;; TODO : add projectile
+;; TODO : add magit-todos
+;; TODO : Add ripgrep
+;; TODO : Add treemacs
