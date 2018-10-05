@@ -5,11 +5,6 @@
 (tool-bar-mode 0)
 (tooltip-mode 0)
 
-
-(use-package kaolin-themes
+(use-package gruvbox-theme
   :config
-  (load-theme 'kaolin-galaxy))
-
-;; (use-package smyx-theme
-;;   :config
-;;   (load-theme 'smyx))
+  (load-theme 'gruvbox-dark-medium))
