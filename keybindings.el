@@ -42,7 +42,7 @@
  "wd" '(delete-window :which-key "delete window")
  "wh" '(split-window-below :which-key "hori split")
  "wr" '(winner-redo :which-key "winner redo")
- "ws" '(split-window-right :which-key "vert split")
+ "wv" '(split-window-right :which-key "vert split")
  "wu" '(winner-undo :which-key "winner undo"))
 
 
