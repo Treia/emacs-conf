@@ -55,3 +55,5 @@
 ;; Load local config
 (load "~/.emacs.d/visual.el")
 (load "~/.emacs.d/evil.el")
+(load "~/.emacs.d/keybindings.el")
+(load "~/.emacs.d/navigation.el")
