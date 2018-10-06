@@ -38,6 +38,15 @@
  "gl" '(magit-log-all :which-key "git log all")
  "gb" '(magit-blame :which-key "git blame")
 
+ ;; h for help
+ "h" '(:ignore t :which-key "help")
+ "hc" '(helpful-command :which-key "commands")
+ "hf" '(helpful-callable :which-key "functions")
+ "hk" '(helpful-key :which-key "keybindings")
+ "hm" '(helpful-macro :which-key "macros")
+ "hp" '(helpful-at-point :which-key "at-point")
+ "hv" '(helpful-variable :which-key "variable")
+
  ;; w for windows
  "w" '(:ignore t :which-key "windows")
  "wd" '(delete-window :which-key "delete window")
@@ -49,6 +58,7 @@
 
 (general-define-key
  :keymaps '(normal emacs)
+ ;; switch windows
  "C-h" 'evil-window-left
  "C-j" 'evil-window-down
  "C-k" 'evil-window-up

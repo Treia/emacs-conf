@@ -35,14 +35,6 @@
 (use-package counsel)
 (use-package swiper)
 (use-package helpful)
-  ;; :config
-  ;; (general-define-key
-  ;;  "C-h C" 'helpful-command
-  ;;  "C-h F" 'helpful-function
-  ;;  "C-h f" 'helpful-callable
-  ;;  "C-h v" 'helpful-variable
-  ;;  "C-h k" 'helpful-key))
-;; TODO : rebind those to some usable key (probably prefix-h)
 
 (use-package which-key
   :config
