@@ -22,6 +22,11 @@
       make-backup-files nil
       vc-follow-symlinks t)
 
+;; Move custom away from here
+(setq-default custom-file (expand-file-name ".custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))
+
 ;; Modes
 (global-display-line-numbers-mode)
 
