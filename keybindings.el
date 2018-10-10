@@ -9,12 +9,12 @@
   treia-leader-key
   treia-non-normal-leader-key)
 
+
 ;; Leader keybindings
 (general-define-key
  :prefix treia-leader-key
  :non-normal-prefix treia-non-normal-leader-key
  :keymaps '(normal visual insert emacs)
-
 
  ;; b for buffers
  "b" '(:ignore t :which-key "buffers")
@@ -25,6 +25,14 @@
  "bk" '(kill-buffer :which-key "kill a buffer")
  "bn" '(evil-buffer-new :which-key "new buffer")
 
+ ;; c for comments
+ "c" '(:ignore t :which-key "comments")	
+ "cb" '(comment-box :which-key "comment box")
+ "cc" '(comment-dwim :which-key "smart comment")
+ "ck" '(comment-kill :which-key "comment kill")
+ "cl" '(comment-line :which-key "comment line")
+ "cr" '(comment-region :which-key "comment region")
+ 
  ;; f for files
  "f" '(:ignore t :which-key "files")
  "ff" '(counsel-find-file :which-key "find file")

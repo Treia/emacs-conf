@@ -12,15 +12,28 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+;; Create directories
+(defvar treia/emacs-dir (file-truename user-emacs-directory)
+  "the path to the .emacs.d directory")
+(defvar treia/cache-dir (concat treia/emacs-dir "cache/")
+  "directory for volatile storage")
+(unless (file-directory-p treia/cache-dir)
+  (make-directory dir t))
+
 ;; Install use package for handling packages
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 
 ;; Bunch of sensibles (or not so much) defaults
 (setq auto-save-default nil
+      create-lockfiles nil
       custom-safe-themes t
+      global-auto-revert-non-file-buffers t
       make-backup-files nil
       vc-follow-symlinks t)
+
+;; Replace yes/no prompt by y/n
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; Move custom away from here
 (setq-default custom-file (expand-file-name ".custom.el" user-emacs-directory))
@@ -29,6 +42,7 @@
 
 ;; Modes
 (global-display-line-numbers-mode)
+(global-auto-revert-mode)
 
 ;; Core packages
 (use-package general)
@@ -57,11 +71,10 @@
 ;; Load local config
 (load "~/.emacs.d/evil.el")
 (load "~/.emacs.d/keybindings.el")
+(load "~/.emacs.d/languages.el")
 (load "~/.emacs.d/navigation.el")
 (load "~/.emacs.d/visual.el")
 
-;; TODO : move magit stuff to a versioning.el
-;; TODO : add projectile
-;; TODO : add magit-todos
+;; TODO : move magit stuff to a versioning.el and add git-gutter
 ;; TODO : Add ripgrep
 ;; TODO : Add treemacs
